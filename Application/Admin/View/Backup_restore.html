@@ -1,0 +1,33 @@
+<html>
+<head>
+    <css file="__PUBLIC__/css/body.css"/>
+    <css file="__STATIC__/icon/icon.css"/>
+</head>
+<body>
+    <div class="top">
+        <div class="position"><span class="icon icon-31"></span>当前位置：数据库备份</div>
+        <div class="top-title">
+            <span class="icon icon-32"></span>
+            <div class="top-tool">
+                <a href="" class="button-a">数据库恢复</a>
+            </div>
+        </div>
+    </div>
+    <div class="body"></div>
+    <div style="text-align: left;width:50%;padding-left:10%;">
+        <p style="font-size: 13px;">恢复数据：</p>
+        <div>
+            <form method="post" action="{:U('Backup/restore')}">
+                <select style="float: left;height:22px;" name="restoredir">
+                    <foreach name="backupdirs" item="dir">
+                        <option value="{$dir}">{$dir}</option>
+                    </foreach>
+                </select>
+                <input type="submit" class="button-b" value="开始恢复"/>
+            </form>
+        </div>
+        <br /><br />
+        <span style="margin-left:0px;" class="remark">请选择要恢复的备份。</span>
+    </div>
+</body>
+</html>

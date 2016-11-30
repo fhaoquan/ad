@@ -1,0 +1,28 @@
+@charset "utf-8";
+.row{
+    min-height:30px;
+    line-height:30px;
+    font-size:12px;
+    border-bottom:1px solid #dcdcdc;
+}
+
+.col{
+    float: left;
+    min-height:30px;
+    line-height:30px;
+}
+.col1{
+    width:10%;
+    font-weight: bold;
+    text-align: right;
+}
+.col2{
+    margin-left: 4px;
+}
+.col2 input{
+    margin-top:5px;
+}
+.col2 select{
+    margin-top:5px;
+    width:154px;
+}

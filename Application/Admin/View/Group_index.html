@@ -1,0 +1,45 @@
+<html>
+<head>
+    <css file="__PUBLIC__/css/body.css"/>
+    <css file="__PUBLIC__/icon/icon.css"/>
+</head>
+<body>
+    <div class="top">
+        <div class="position"><span class="icon icon-31"></span>当前位置：会员组列表</div>
+        <div class="top-title">
+            <span class="icon icon-32"></span>
+            <div class="top-tool">
+                <a href="{:U('Group/add')}" class="button-a">添加会员组</a>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <table class="list-tb" border="0" cellpadding="0" cellspacing="4">
+             <tr>
+                    <th><span>ID</span></th>
+                    <th><span>会员组名称</span></th>
+                    <th><span>等级</span></th>
+                    <foreach name="fields" item="vs">
+                        <th><span>{$vs['title']}</span></th>
+                    </foreach>
+                    <th width="15%">操作</th>
+            </tr>
+            <foreach name="groups" item="v">
+                <tr>
+                    <td>{$v['id']}</td>
+                    <td>{$v['title']}</td>
+                    <td>{$v['level']}</td>
+                    <foreach name="fields" item="vs">
+                        <td><if condition="$v[$vs['name']] eq NULL">&emsp;<elseif condition="$vs[ftype] eq 9"/>{$vs[fval]|fval2str=###,$v[$vs['name ']]}<else/>{$v[$vs['name']]}</if></td>
+                    </foreach>
+                    <td class="operate">
+                        <a href="{:U('Group/modify',array('id'=>$v['id']))}"><span class="icon icon-43"></span>修改</a>
+                        <a href="{:U('Group/delete',array('id'=>$v['id']))}"><span class="icon icon-44"></span>删除</a>
+                    </td>
+                </tr>
+            </foreach>
+        </table>
+        <div class="page">{$page}</div>
+    </div>
+</body>
+</html>

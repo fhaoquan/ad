@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="__PUBLIC__/css/menu.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <div class="left_nav">
+        <div class="photo">
+            <img src="__PUBLIC__/images/define_user.png"/>
+            <div>
+                <p>用户名:{:session('un')}</p>
+                <p>数据库:{:C('DB_NAME')}</p>
+            </div>
+        </div>
+		<empty name="model">
+		<ul><li class="title-s"><a href="{:U('Model/add')}" target="main">请先<span style="color:#4679bd;">添加模型</span></a></li></ul>
+		<else/>
+        <foreach name="model" item="v">
+            <ul>
+                <li class="title-s"><a>{$v.title}管理</a></li>
+                <li><a href="{:U('Content/index',array('model'=>$v['model']))}" target="main">{$v.title}列表</a></li>
+                <li><a href="{:U('Content/add',array('model'=>$v['model']))}" target="main">添加{$v.title}</a></li>
+            </ul>
+        </foreach>
+		</empty>
+    </div>
+</body>
+</html>
