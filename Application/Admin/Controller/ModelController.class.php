@@ -38,12 +38,16 @@ class ModelController extends BaseController
             $table_model = C('DB_PREFIX') . I('model');
 
             $Model = M();
-            $Model->execute("CREATE TABLE `" . $table_model . "` (`id` int(4) NOT NULL AUTO_INCREMENT,`typeid` int(4) NOT NULL,`title` varchar(100) NOT NULL DEFAULT '',`keywords` varchar(100) NULL DEFAULT '',`description` varchar(255) NULL DEFAULT '',`userid` int(15) NULL DEFAULT  '0',`ctime` int(10) NULL,`uptime` int(10) NULL,`views` int(15) NULL DEFAULT  '0',`orderid` int(4) NULL DEFAULT  '0', PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+            $Model->execute("CREATE TABLE `" . $table_model . "` (`id` int(4) NOT NULL AUTO_INCREMENT,`typeid` int(4) NOT NULL,`title` varchar(100) NOT NULL DEFAULT '',`keywords` varchar(100) NULL DEFAULT '',`ctime` int(10) NULL,`uptime` int(10) NULL,`orderid` int(4) NULL DEFAULT  '0', PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
             $db = M('model');
             $data = $db->create();
             $data['titlename'] = I('titlename') ? I('titlename') : '标题';
-            $db->add($data);
-            $this->success('创建完成！');
+            $res = $db->add($data);
+            if ($res) {
+                $this->success('创建完成！');
+            } else {
+                $this->error('创建失败！');
+            }
         } else {
             $this->display();
         }

@@ -4,7 +4,7 @@ use Think\Controller;
 class BaseController extends Controller {
     Public function _initialize()
     {
-        
+
         if(!isset($_SESSION[C('USER_AUTH_KEY')])){
             $this->redirect('Login/index');
         }

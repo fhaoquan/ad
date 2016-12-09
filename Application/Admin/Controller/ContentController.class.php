@@ -33,7 +33,6 @@ class ContentController extends BaseController {
 			$data=$db->create();
 			$data['ctime']=time();
 			$data['uptime']=time();
-			$data['userid']=session(C('USER_AUTH_KEY'));
 			$id=$db->add($data);
 
 			$this->success('添加完成',U('index',array('model'=>$model)));
