@@ -13,22 +13,11 @@ class ShowController extends BaseController{
 
     }
 
-    public function getAllShows(){
-        $Show = D('Show');
-        //接收参数
-        $page = I('page') ? I('page') : 1;
-        $perpage = I('perpage') ? I('perpage') : 2;
-
-        //参数检查
-
-        //分页查询节目信息列表
-        $list = $Show->limit($perpage)->page($page)->select();
-        //返回数据
-        $this->ajaxReturn(array('error'=>false,'data'=>$list));
-    }
-
+    /**
+     * 根据筛选信息获取节目列表(获取全部节目,获取推荐节目,获取分类节目,获取筛选后节目)
+     */
     public function getShows(){
-        $Show = D('Show');
+        $Show = D('show');
         //接收参数
         $page = I('page') ? I('page') : 1;
         $perpage = I('perpage') ? I('perpage') : 2;
@@ -40,10 +29,63 @@ class ShowController extends BaseController{
                 unset($filter[$key]);
             }
         }
+//        if(!in_array($filter, array())){
+//            $this->ajaxReturn(array('error'=>true,'data'=>'筛选类型有误'));
+//        }
         //分页查询节目信息列表
-        $list = $Show->where($filter)->limit($perpage)->page($page)->select();
+        $list = $Show->where($filter)->relation(true)->limit($perpage)->page($page)->select();
+        foreach ($list as $index => $item) {
+            $list[$index]['casts'] = array_column($item['casts'], 'name') ;
+            $list[$index]['directors'] = array_column($item['directors'], 'name') ;
+        }
         //返回数据
         $this->ajaxReturn(array('error'=>false,'data'=>$list));
     }
 
+    /**
+     * 获取节目详细信息
+     */
+    public function getShow(){
+        $Show = D('show');
+        //接收参数
+        $id = I('id');
+
+        //参数检查
+        if(!$id){
+            $this->ajaxReturn(array('error'=>true,'data'=>'id不能为空'));
+        }
+        //分页查询节目信息列表
+        $show = $Show->relation(true)->find($id);
+        $show['casts'] = array_column($show['casts'], 'name') ;
+        $show['directors'] = array_column($show['directors'], 'name') ;
+        //返回数据
+        if($show){
+            $this->ajaxReturn(array('error'=>false,'data'=>$show));
+        }else{
+            $this->ajaxReturn(array('error'=>true,'data'=>'节目不存在'));
+        }
+    }
+
+    /**
+     * 获取筛选条件信息列表（高级筛选功能按字段筛选）
+     */
+    public function getFilters(){
+        //接收参数
+        $filter = I('filter');
+        $page = I('page') ? I('page') : 1;
+        $perpage = I('perpage') ? I('perpage') : 2;
+
+        //参数检查
+        if(!$filter){
+            $this->ajaxReturn(array('error'=>true,'data'=>'filter不能为空'));
+        }elseif (!in_array($filter, array('cast','director'))){
+            $this->ajaxReturn(array('error'=>true,'data'=>'filter格式错误'));
+        }
+
+        $db = D($filter);
+        //分页查询筛选条件信息列表
+        $list = $db->limit($perpage)->page($page)->select();
+        //返回数据
+        $this->ajaxReturn(array('error'=>false,'data'=>$list));
+    }
 }

@@ -25,12 +25,10 @@ class ModelController extends BaseController
         if (IS_POST) {
             if (!I("title")) $this->error('名称不能为空！');
             if (!I("model")) $this->error('标识不能为空！');
-            if (I("model") == 'type') $this->error('系统保留字段,请重新定义标识！');
-            if (I("model") == 'model') $this->error('系统保留字段,请重新定义标识！');
-            if (I("model") == 'session') $this->error('系统保留字段,请重新定义标识！');
-            if (I("model") == 'site') $this->error('系统保留字段,请重新定义标识！');
-            if (I("model") == 'user') $this->error('系统保留字段,请重新定义标识！');
-            if (I("model") == 'fields') $this->error('系统保留字段,请重新定义标识！');
+            $models = array('type', 'model', 'session', 'site', 'user', 'fields');
+            if(in_array(I('model'), $models)){
+                $this->error('系统保留字段,请重新定义标识！');
+            }
             $count = M('model')->where(array('model' => I('model')))->count();
             if ($count != 0) {
                 $this->error('标识已存在，请重新定义标识!');
@@ -38,7 +36,7 @@ class ModelController extends BaseController
             $table_model = C('DB_PREFIX') . I('model');
 
             $Model = M();
-            $Model->execute("CREATE TABLE `" . $table_model . "` (`id` int(4) NOT NULL AUTO_INCREMENT,`typeid` int(4) NOT NULL,`title` varchar(100) NOT NULL DEFAULT '',`keywords` varchar(100) NULL DEFAULT '',`ctime` int(10) NULL,`uptime` int(10) NULL,`orderid` int(4) NULL DEFAULT  '0', PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+            $Model->execute("CREATE TABLE `" . $table_model . "` (`id` int(11) NOT NULL AUTO_INCREMENT,`typeid` int(11) NOT NULL,`title` varchar(100) NOT NULL DEFAULT '',`keywords` varchar(100) NULL DEFAULT '',`ctime` int(10) NULL,`uptime` int(10) NULL,`orderid` int(4) NULL DEFAULT  '0', PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
             $db = M('model');
             $data = $db->create();
             $data['titlename'] = I('titlename') ? I('titlename') : '标题';

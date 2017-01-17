@@ -10,14 +10,14 @@ class UserController extends BaseController {
         if(check_login()){
             $user = session('user');
         }else{
-            $this->ajaxReturn(array('error'=>true, 'data'=>'请登录'));
+            $this->ajaxReturn(array('error'=>true, 'data'=>C('ERROR_CODE.UNLOGINED')));
         }
 
         //返回结果
         if($user){
             $this->ajaxReturn(array('error'=>false, 'data'=>$user));
         }else{
-            $this->ajaxReturn(array('error'=>true, 'data'=>'用户不存在'));
+            $this->ajaxReturn(array('error'=>true, 'data'=>C('ERROR_CODE.USER_NOT_EXIST')));
         }
     }
 
@@ -25,31 +25,178 @@ class UserController extends BaseController {
      * 登录
      */
     public function login(){
+        if(IS_POST){
+            $User = D('user');
+            //获取参数
+            $username = str_replace(' ','',I('username'));
+            $password = I('password');
 
+            //参数检查
+            if($username == ''){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'用户名不能为空'));
+            }
+            if($password == ''){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'密码不能为空'));
+            }
+            //检查用户名是否存在
+            $where['username'] = $username;
+            $count = $User->where($where)->count();
+            if(!$count){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'用户不存在'));
+            }
+            //登录
+            $where['password'] = MD5($password);
+            $user = $User->where($where)->find();
+            if(empty($user)){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'密码错误'));
+            }else{
+                //登录成功
+                $data['lasttime'] = $user['lasttime'] = time();
+                $data['lastip'] = $user['lastip'] = get_client_ip();
+                $User->where(array('id'=>$user['id']))->save($data);
+                session('uid',$user['id']);
+                session('user',$user);
+
+                $this->ajaxReturn(array('error'=>false, 'data'=>$user));
+            }
+        }else{
+            $this->ajaxReturn(array('error'=>true, 'data'=>C('ERROR_CODE.MUST_POST')));
+        }
     }
     /**
      * 注册
      */
     public function register(){
-
+        if(IS_POST){
+            $User = D('user');
+            //获取参数
+            $username = str_replace(' ','',I('username'));
+            $password = I('password');
+            //参数检查
+            if($username == ''){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'用户名不能为空'));
+            }
+            if($password == ''){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'密码不能为空'));
+            }
+            if(!check_phone($username)){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'手机号格式不对'));
+            }
+            //检查用户名是否存在
+            $where['username'] = $username;
+            $count = $User->where($where)->count();
+            if($count){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'用户名已存在'));
+            }
+            //注册
+            $data['username'] = $username;
+            $data['password'] = MD5($password);
+            $data['nickname'] = $username;
+            $data['regtime'] = time();
+            $data['regip'] = get_client_ip();
+            $res = $User->add($data);
+            //返回结果
+            if($res){
+                //注册成功
+                $this->ajaxReturn(array('error'=>false, 'data'=>$res));
+            }else{
+                $this->ajaxReturn(array('error'=>true, 'data'=>'注册失败'));
+            }
+        }else{
+            $this->ajaxReturn(array('error'=>true, 'data'=>C('ERROR_CODE.MUST_POST')));
+        }
     }
     /**
      * 编辑个人资料
      */
     public function edit(){
+        //检查登录状态
+        if(check_login()){
+            $uid = session('uid');
+            $username = session('user.username');
+        }else{
+            $this->ajaxReturn(array('error'=>true, 'data'=>C('ERROR_CODE.UNLOGINED')));
+        }
+        if(IS_POST){
+            $User = D('user');
+            //获取参数
+            $avatar = I('avatar');
+            $nickname = I('nickname');
+            //参数检查
+            if($nickname == ''){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'昵称不能为空'));
+            }
+            if($avatar == ''){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'头像不能为空'));
+            }
 
+            //编辑
+            $data['avatar'] = $avatar;
+            $data['nickname'] = $nickname;
+            $res = $User->where(array('id'=>$uid))->save($data);
+            //返回结果
+            if ($res === false) {
+                $this->ajaxReturn(array('error'=>true, 'data'=>'修改资料失败'));
+            } else {
+                //更新session
+                $user = $User->find($uid);
+                session('user', $user);
+                $this->ajaxReturn(array('error'=>false, 'data'=>'修改资料成功'));
+            }
+        }else{
+            $this->ajaxReturn(array('error'=>true, 'data'=>C('ERROR_CODE.MUST_POST')));
+        }
     }
     /**
      * 注销登录
      */
     public function logout(){
-
+        session('[destroy]');
+        $this->ajaxReturn(array('error'=>false, 'data'=>'注销登录'));
     }
     /**
-     * 忘记密码
+     * 找回密码
      */
-    public function forgetPassword(){
+    public function findPassword(){
+        if(IS_POST){
+            $User = D('user');
+            //获取参数
+            $username = str_replace(' ','',I('username'));
+            $password = I('password');
+            $passwordConfirm = I('passwordConfirm');
 
+            //参数检查
+            if($username == ''){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'用户名不能为空'));
+            }
+            if($password == ''){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'密码不能为空'));
+            }
+            if($passwordConfirm == ''){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'确认密码不能为空'));
+            }
+            if($password != $passwordConfirm){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'密码不一致'));
+            }
+            //检查用户名是否存在
+            $where['username'] = $username;
+            $count = $User->where($where)->count();
+            if(!$count){
+                $this->ajaxReturn(array('error'=>true, 'data'=>'用户名不存在'));
+            }
+
+            //修改密码
+            $data['password'] = MD5($password);
+            $res = $User->where($where)->save($data);
+            //返回结果
+            if ($res === false) {
+                $this->ajaxReturn(array('error'=>true, 'data'=>'找回密码失败'));
+            } else {
+                $this->ajaxReturn(array('error'=>false, 'data'=>'找回密码成功'));
+            }
+        }else{
+            $this->ajaxReturn(array('error'=>true, 'data'=>C('ERROR_CODE.MUST_POST')));
+        }
     }
     /**
      * 获取收藏列表
@@ -60,7 +207,7 @@ class UserController extends BaseController {
         if(check_login()){
             $uid = session('uid');
         }else{
-            $this->ajaxReturn(array('error'=>true, 'data'=>'请登录'));
+            $this->ajaxReturn(array('error'=>true, 'data'=>C('ERROR_CODE.UNLOGINED')));
         }
         //获取参数
         $page = I('page') ? I('page') : 1;
@@ -93,14 +240,14 @@ class UserController extends BaseController {
         if(check_login()){
             $uid = session('uid');
         }else{
-            $this->ajaxReturn(array('error'=>true, 'data'=>'请登录'));
+            $this->ajaxReturn(array('error'=>true, 'data'=>C('ERROR_CODE.UNLOGINED')));
         }
         if(IS_POST){
             //获取参数
             $sid = I('sid');
             //参数检查
-            if (!is_numeric($sid)){
-                $this->ajaxReturn(array('error' => true, 'data' => '目标id有误'));
+            if ($sid == ''){
+                $this->ajaxReturn(array('error' => true, 'data' => '目标id不能为空'));
             }
             //查询收藏目标是否存在
             $count = M('show')->where(array('id'=>$sid))->count();
@@ -127,7 +274,7 @@ class UserController extends BaseController {
             if(check_favorite($uid, $sid)){
                 $this->ajaxReturn(array('error' => true, 'data' => '已收藏'));
             }
-            //保存数据
+            //添加数据
             $data['sid'] = $sid;
             $data['uid'] = $uid;
             $data['ctime'] = time();
@@ -150,7 +297,7 @@ class UserController extends BaseController {
                 $this->ajaxReturn(array('error'=>false,'data'=>'收藏成功'));
             }
         }else{
-            $this->ajaxReturn(array('error'=>true,'data'=>'非法调用'));
+            $this->ajaxReturn(array('error'=>true,'data'=>C('ERROR_CODE.MUST_POST')));
         }
     }
     /**
@@ -162,14 +309,14 @@ class UserController extends BaseController {
         if(check_login()){
             $uid = session('uid');
         }else{
-            $this->ajaxReturn(array('error'=>true, 'data'=>'请登录'));
+            $this->ajaxReturn(array('error'=>true, 'data'=>C('ERROR_CODE.UNLOGINED')));
         }
         if(IS_POST){
             //获取参数
             $sid = I('sid');
             //参数检查
-            if (!is_numeric($sid)){
-                $this->ajaxReturn(array('error' => true, 'data' => '目标id有误'));
+            if ($sid == ''){
+                $this->ajaxReturn(array('error' => true, 'data' => '目标id不能为空'));
             }
             //查询该用户是否已收藏
             if(!check_favorite($uid, $sid)){
@@ -193,7 +340,7 @@ class UserController extends BaseController {
                 $this->ajaxReturn(array('error'=>false,'data'=>'取消收藏成功'));
             }
         }else{
-            $this->ajaxReturn(array('error'=>true,'data'=>'非法调用'));
+            $this->ajaxReturn(array('error'=>true, 'data'=>C('ERROR_CODE.MUST_POST')));
         }
     }
 }

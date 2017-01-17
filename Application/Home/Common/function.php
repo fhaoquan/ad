@@ -28,12 +28,13 @@ function check_login(){
 }
 
 /**
+ * 检查用户是否已收藏
  * @param $uid 用户id
  * @param $sid 收藏目标id
  * @return bool 是否已经收藏
  */
 function check_favorite($uid, $sid){
-    $Favorite = M('user_favorite');
+    $Favorite = D('user_favorite');
     $where = array('uid'=>$uid);
     $sids = $Favorite->where($where)->getField('sids');
     $sids = explode(',', $sids);
@@ -44,4 +45,18 @@ function check_favorite($uid, $sid){
         return false;
     }
     return false;
+}
+
+/**
+ * 检查电话号码格式
+ * @param $phone 电话号码
+ * @return bool 格式是否正确
+ */
+function check_phone($phone){
+    $pattern = '/^(1(([35][0-9])|(47)|[8][01236789]))\\d{8}$/';
+    if(preg_match($pattern, $phone)){
+        return true;
+    }else{
+        return false;
+    }
 }
