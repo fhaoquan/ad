@@ -37,6 +37,8 @@ class ShowController extends BaseController{
         foreach ($list as $index => $item) {
             $list[$index]['casts'] = array_column($item['casts'], 'name') ;
             $list[$index]['directors'] = array_column($item['directors'], 'name') ;
+            $list[$index]['distribution_platforms'] = array_column($item['distribution_platforms'], 'name') ;
+            $list[$index]['tv_platforms'] = array_column($item['tv_platforms'], 'name') ;
         }
         //返回数据
         $this->ajaxReturn(array('error'=>false,'data'=>$list));
@@ -52,17 +54,29 @@ class ShowController extends BaseController{
 
         //参数检查
         if(!$id){
-            $this->ajaxReturn(array('error'=>true,'data'=>'id不能为空'));
+            if(IS_POST){
+                $this->ajaxReturn(array('error'=>true,'data'=>'id不能为空'));
+            }else{
+                $this->error('id不能为空');
+            }
         }
         //分页查询节目信息列表
         $show = $Show->relation(true)->find($id);
         $show['casts'] = array_column($show['casts'], 'name') ;
         $show['directors'] = array_column($show['directors'], 'name') ;
-        //返回数据
-        if($show){
-            $this->ajaxReturn(array('error'=>false,'data'=>$show));
+        $show['distribution_platforms'] = array_column($show['distribution_platforms'], 'name') ;
+        $show['tv_platforms'] = array_column($show['tv_platforms'], 'name') ;
+
+        if(IS_POST){
+            //返回数据
+            if($show){
+                $this->ajaxReturn(array('error'=>false,'data'=>$show));
+            }else{
+                $this->ajaxReturn(array('error'=>true,'data'=>'节目不存在'));
+            }
         }else{
-            $this->ajaxReturn(array('error'=>true,'data'=>'节目不存在'));
+            $this->show = $show;
+            $this->display();
         }
     }
 
@@ -78,7 +92,7 @@ class ShowController extends BaseController{
         //参数检查
         if(!$filter){
             $this->ajaxReturn(array('error'=>true,'data'=>'filter不能为空'));
-        }elseif (!in_array($filter, array('cast','director'))){
+        }elseif (!in_array($filter, array('cast','director','dplatform','tplatform','company'))){
             $this->ajaxReturn(array('error'=>true,'data'=>'filter格式错误'));
         }
 

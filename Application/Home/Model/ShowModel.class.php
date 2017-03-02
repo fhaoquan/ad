@@ -30,5 +30,25 @@ class ShowModel extends RelationModel{
             'mapping_fields'=>'name',
             'as_fields'=>'name',
         ),
+        'dplatform'=>array(
+            'mapping_type'=>self::MANY_TO_MANY,
+            'class_name'=>'dplatform',
+            'mapping_name'=>'distribution_platforms',
+            'foreign_key'=>'sid',
+            'relation_foreign_key'=>'dpid',
+            'relation_table'=>'ad_sdp',
+            'mapping_fields'=>'name',
+            'as_fields'=>'name',
+        ),
+        'tplatform'=>array(
+            'mapping_type'=>self::MANY_TO_MANY,
+            'class_name'=>'tplatform',
+            'mapping_name'=>'tv_platforms',
+            'foreign_key'=>'sid',
+            'relation_foreign_key'=>'tpid',
+            'relation_table'=>'ad_stp',
+            'mapping_fields'=>'name',
+            'as_fields'=>'name',
+        ),
     );
 }
