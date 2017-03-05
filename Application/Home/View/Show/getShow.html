@@ -1,50 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>关于－UI100day坚持100天</title>
-    <!-- Bootstrap Core CSS -->
-    <link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="__PUBLIC__/css/100dayui.css" rel="stylesheet">
-    <!-- jQuery -->
-    <script src="__PUBLIC__/js/jquery.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="__PUBLIC__/js/bootstrap.min.js"></script>
-    <script src="__PUBLIC__/js/bootstrap-hover-dropdown.min.js"></script>
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>节目信息</title>
+	<!-- Bootstrap Core CSS -->
+	<link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet">
+	<!-- jQuery -->
+	<script src="__PUBLIC__/js/jquery.min.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+	<script src="__PUBLIC__/js/bootstrap-hover-dropdown.min.js"></script>
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 	<script>
-		function setText(text){
+		function setText(text) {
 			$('#showName').val(text);
 		}
+		$(window).load(function(){
+//			//$("#loading").delay(2000).fadeOut(500);
+//			$("#loading-center").click(function() {
+//				$("#loading").fadeOut(500);
+//			})
+
+			//初始化滑动图片
+			var heights = $('.swiper-slide img').height();
+			$('.swiper-container').css({height: heights}); //获取图片自适应高度赋值
+			var swiper = new Swiper('.swiper-container', {
+				direction: 'horizontal',
+				freeMode: true,
+				slidesPerView: 'auto',
+				spaceBetween: 8,
+
+			});
+
+			//加载结束
+			$("#loading").fadeOut(500);
+		});
 	</script>
+	<link rel="stylesheet" href="__PUBLIC__/dist/css/swiper.min.css">
+	<script src="__PUBLIC__/dist/js/swiper.min.js"></script>
 </head>
-<body class="bodybackground">
-<include file="Public/head" />
-<!-- PastEvents -->
-<div class="container">
-    <div class="row">
-	    <!-- Content -->
-		<div class="col-lg-12 col-md-12 mt20">
-			<div class="mypanel col-lg-12 col-md-12" style="padding:40px">
-                {$show.id}
-				<input id="showName" type="text">
-				<input type="date">
-				<button onclick="window.showObj.toast('123')">弹出toast</button>
+<body>
+	<div id="loading">
+		<div id="loading-center">
+			<div id="loading-center-absolute">
+				<div class="object" id="object_one"></div>
+				<div class="object" id="object_two"></div>
+				<div class="object" id="object_three"></div>
+				<div class="object" id="object_four"></div>
 			</div>
 		</div>
-    </div>
-</div>
-    <hr>
-<include file="Public/foot" />
+	</div>
+	<include file="Public/head"/>
+
+	<style>
+		html, body{
+			margin: 0px;
+			height: 100%;
+		}
+
+		.swiper-slide {
+			width: 200px;
+		}
+
+		.grid_box {
+			width: 100%;
+			height: 100%;
+			padding-top: 16px;
+			padding-bottom: 16px;
+			border-bottom: solid 1px rgba(0, 0, 0, 0.12);
+		}
+
+		.grid_row_box {
+			display: -webkit-flex;  /* 新版本语法: Chrome 21+ */
+			display: flex;          /* 新版本语法: Opera 12.1, Firefox 22+ */
+			display: -webkit-box;   /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+			display: -moz-box;      /* 老版本语法: Firefox (buggy) */
+			display: -ms-flexbox;   /* 混合版本语法: IE 10 */
+
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			-webkit-box-orient: horizontal;
+		}
+
+		.grid_column_box {
+			display: -webkit-flex;  /* 新版本语法: Chrome 21+ */
+			display: flex;          /* 新版本语法: Opera 12.1, Firefox 22+ */
+			display: -webkit-box;   /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+			display: -moz-box;      /* 老版本语法: Firefox (buggy) */
+			display: -ms-flexbox;   /* 混合版本语法: IE 10 */
+
+			-webkit-flex: 1;        /* Chrome */
+			-ms-flex: 1;            /* IE 10 */
+			flex: 1;                /* NEW, Spec - Opera 12.1, Firefox 20+ */
+			-webkit-box-flex: 1;    /* OLD - iOS 6-, Safari 3.1-6 */
+			-moz-box-flex: 1;       /* OLD - Firefox 19- */
+
+			-webkit-flex-direction: column;
+			-moz-flex-direction: column;
+			-ms-flex-direction: column;
+			-o-flex-direction: column;
+			flex-direction: column;
+			-webkit-box-orient: vertical;
+
+			/* 09版 */
+			/*-webkit-box-lines: multiple;*/
+			/* 12版 */
+			-webkit-flex-wrap: nowrap;
+			-moz-flex-wrap: nowrap;
+			-ms-flex-wrap: nowrap;
+			-o-flex-wrap: nowrap;
+			flex-wrap: nowrap;
+
+			/* 09版 */
+			-webkit-box-pack: justify;
+			/* 12版 */
+			-webkit-justify-content: space-between;
+			-moz-justify-content: space-between;
+			-ms-justify-content: space-between;
+			-o-justify-content: space-between;
+			justify-content: space-between;
+		}
+
+		.title {
+			width: 100%;
+			height: 100%;
+			font-family: PingFangSC-Regular;
+			color: #2F3336;
+		}
+
+		.content {
+			width: 100%;
+			height: 100%;
+			margin-top: 8px;
+			font-family: PingFangSC-Light;
+			color: #7F858A;
+		}
+
+		.title, .content {
+			opacity: 0.87;
+			font-size: 16px;
+			letter-spacing: 0;
+		}
+
+		.pre-video img {
+			width: 200px;
+			height: 124px;
+			float: left;
+		}
+
+		.show_thumb img {
+			width: 100%;
+			height: 100%;
+			max-height: 250px;
+		}
+
+		.show_name {
+			width: 100%;
+			height: 100%;
+			opacity: 0.87;
+			font-family: PingFangSC-Medium;
+			font-size: 24px;
+			color: #2F3336;
+			letter-spacing: 0;
+		}
+
+		.read_more {
+			color: #29A1F7;
+		}
+	</style>
+	<style>
+		#loading{
+			background-color: #FFFFFF;
+			height: 100%;
+			width: 100%;
+			position: fixed;
+			z-index: 999;
+			margin-top: 0px;
+			top: 0px;
+		}
+		#loading-center{
+			width: 100%;
+			height: 100%;
+			position: relative;
+		}
+		#loading-center-absolute {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			height: 20px;
+			width: 140px;
+			margin-top: -10px;
+			margin-left: -70px;
+			 -webkit-animation: loading-center-absolute 1s infinite;
+			animation: loading-center-absolute 1s infinite;
+
+		}
+		.object{
+			width: 20px;
+			height: 20px;
+			background-color: #29A1F7;
+			float: left;
+			 -moz-border-radius: 50% 50% 50% 50%;
+			 -webkit-border-radius: 50% 50% 50% 50%;
+			border-radius: 50% 50% 50% 50%;
+			margin-right: 20px;
+			margin-bottom: 20px;
+		}
+		.object:last-child {
+			margin-right: 0px;
+
+		}
+		#object_one{
+			 -webkit-animation: object_one 1s infinite;
+			animation: object_one 1s infinite;
+		}
+		#object_two{
+			 -webkit-animation: object_two 1s infinite;
+			animation: object_two 1s infinite;
+		}
+		#object_three{
+			 -webkit-animation: object_three 1s infinite;
+			animation: object_three 1s infinite;
+		}
+		#object_four{
+			 -webkit-animation: object_four 1s infinite;
+			animation: object_four 1s infinite;
+		}
+
+		@-webkit-keyframes loading-center-absolute{
+			100% {
+				 -ms-transform: rotate(360deg);
+				 -webkit-transform: rotate(360deg);
+				transform: rotate(360deg);
+			}
+
+		}
+		@keyframes loading-center-absolute{
+			100% {
+				 -ms-transform: rotate(360deg);
+				 -webkit-transform: rotate(360deg);
+				transform: rotate(360deg);
+			}
+		}
+		@-webkit-keyframes object_one{
+			50% {
+				 -ms-transform: translate(20px,20px);
+				 -webkit-transform: translate(20px,20px);
+				transform: translate(20px,20px);
+			}
+		}
+		@keyframes object_one{
+			50% {
+				 -ms-transform: translate(20px,20px);
+				 -webkit-transform: translate(20px,20px);
+				transform: translate(20px,20px);
+			}
+		}
+		@-webkit-keyframes object_two{
+			50% {
+				 -ms-transform: translate(-20px,20px);
+				 -webkit-transform: translate(-20px,20px);
+				transform: translate(-20px,20px);
+			}
+		}
+		@keyframes object_two{
+			50% {
+				 -ms-transform: translate(-20px,20px);
+				 -webkit-transform: translate(-20px,20px);
+				transform: translate(-20px,20px);
+			}
+		}
+		@-webkit-keyframes object_three{
+			50% {
+				 -ms-transform: translate(20px,-20px);
+				 -webkit-transform: translate(20px,-20px);
+				transform: translate(20px,-20px);
+			}
+		}
+		@keyframes object_three{
+			50% {
+				 -ms-transform: translate(20px,-20px);
+				 -webkit-transform: translate(20px,-20px);
+				transform: translate(20px,-20px);
+			}
+		}
+		@-webkit-keyframes object_four{
+			50% {
+				 -ms-transform: translate(-20px,-20px);
+				 -webkit-transform: translate(-20px,-20px);
+				transform: translate(-20px,-20px);
+			}
+		}
+		@keyframes object_four{
+			50% {
+				 -ms-transform: translate(-20px,-20px);
+				 -webkit-transform: translate(-20px,-20px);
+				transform: translate(-20px,-20px);
+			}
+		}
+	</style>
+	<!-- PastEvents -->
+	<div class="show_thumb">
+		<!--<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488633816726&di=769192ec8756041ba0a0ab5a12d8dd8c&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fe850352ac65c10381d59f42cb6119313b07e893c.jpg">-->
+		<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700717933&di=7132c6049e5f7d637a8f81e8c92929a3&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2Fa2973ecbee4c8f4d9cdcc52d785a47249e24a5be.jpg">
+	</div>
+	<div class="container" style="padding-left: 16px; padding-right: 16px;">
+		<!-- Content -->
+		<div class="show_box">
+			<div class="grid_box">
+				<div class="show_name">三生三世十里桃花</div>
+				<div class="content"><span>导演：</span><span class="read_more">林玉芬</span></div>
+			</div>
+			<div class="grid_box">
+				<div class="title"><span>简介：</span></div>
+				<div class="content"><span>《三生三世十里桃花》是作家唐七的成名之作，也是“三生三世”系列第一部，故事讲述了青丘帝姬白浅和九重天太子夜华的三生爱恨、三世纠葛。由阿里影业、儒意影业联合出品…</span><span
+						class="read_more">阅读更多</span></div>
+			</div>
+			<div class="grid_box">
+				<div class="title"><span>预告片／剧照</span></div>
+				<div class="content pre-video swiper-container">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide"><img
+								src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505452&di=2e895f99ade0de678e5b37ae812097e4&imgtype=0&src=http%3A%2F%2Fimage14.m1905.cn%2Fuploadfile%2F2016%2F0610%2F20160610094214956467_watermark.jpg">
+						</div>
+						<div class="swiper-slide"><img
+								src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505452&di=c136723ec86d12095fa55a7d53f562b4&imgtype=0&src=http%3A%2F%2Fh7.86.cc%2Fwalls%2F20160803%2F1440x900_f8c44b5e1ee4771.jpg">
+						</div>
+						<div class="swiper-slide"><img
+								src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505449&di=c8965141a69a96c198c1e2fd893a9dd0&imgtype=0&src=http%3A%2F%2Fwww.binzz.com%2Fuploads%2Fimage%2F20170214%2F1487089115101391.jpg">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="grid_box">
+				<div class="title"><span>类型：</span></div>
+				<div class="content"><span>古装、爱情、仙侠、玄幻</span></div>
+			</div>
+			<div class="grid_box">
+				<div class="title"><span>预计上线时间：</span></div>
+				<div class="content"><span>2017年1月30日</span></div>
+			</div>
+			<div class="grid_box">
+				<div class="title"><span>网络播放平台：</span></div>
+				<div class="content"><span>优酷、爱奇艺、腾讯、搜狐视频、乐视</span></div>
+			</div>
+			<div class="grid_box">
+				<div class="title"><span>卫视平台：</span></div>
+				<div class="content"><span>浙江卫视、东方卫视</span></div>
+			</div>
+			<div class="grid_box">
+				<div class="title"><span>出品公司：</span></div>
+				<div class="content"><span>剧酷传播、嘉行传媒、三味火</span></div>
+			</div>
+			<div class="grid_box">
+				<div class="grid_row_box">
+					<div class="grid_column_box">
+						<div class="title"><span>影视期数</span></div>
+						<div class="content"><span>58集</span></div>
+					</div>
+					<div class="grid_column_box">
+						<div class="title"><span>营销等级</span></div>
+						<div class="content"><span>S级</span></div>
+					</div>
+					<div class="grid_column_box">
+						<div class="title"><span>更新方式</span></div>
+						<div class="content"><span>日更新</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="grid_box">
+				<div class="title"><span>主演阵容：</span></div>
+				<div class="content"><span>杨幂、赵又廷、张智尧 、迪丽热巴、高伟光</span></div>
+			</div>
+			<div class="grid_box">
+				<div class="title"><span>招商状态：</span></div>
+				<div class="content"><span>招商中</span></div>
+			</div>
+			<div class="grid_box">
+				<div class="title"><span>招商时间</span></div>
+				<div class="content"><span>2016年11月30日 至 2017年1月20</span></div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<include file="Public/foot"/>
+	<script type="text/javascript">
+
+	</script>
 </body>
 </html>

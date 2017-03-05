@@ -80,6 +80,18 @@ class ShowController extends BaseController{
         }
     }
 
+    public function addShow(){
+
+    }
+
+    public function editShow(){
+
+    }
+
+    public function deleteShow(){
+
+    }
+
     /**
      * 获取筛选条件信息列表（高级筛选功能按字段筛选）
      */
