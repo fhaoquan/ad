@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>修改节目</title>
+	<!-- Bootstrap Core CSS -->
+	<link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet">
+	<!-- jQuery -->
+	<script src="__PUBLIC__/js/jquery.min.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+	<script src="__PUBLIC__/js/bootstrap-hover-dropdown.min.js"></script>
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<script>
+		function setText(text) {
+			$('#showName').val(text);
+		}
+		function editHandle(event) {
+			var type = event.data.type;
+			switch (type) {
+				case 'editSummary': {
+					var summary = $(this).val();
+					if((summary != 'undefined') && (summary != '')){
+						editObj.editSummary(summary);
+					}else{
+						editObj.editSummary(null);
+					}
+				}
+					break;
+				case 'editName': {
+					editObj.editName();
+				}
+					break;
+				case 'editDate': {
+					var date = $(this).val();
+					var newDate;
+					if((date != 'undefined') && (date != '')){
+						newDate = editObj.editDate(date);
+					}else{
+						newDate = editObj.editDate(null);
+					}
+					alert(newDate);
+					editObj.toast(newDate);
+					$(this).val(newDate);
+				}
+					break;
+				default:
+					break;
+			}
+		}
+		function editPost() {
+			var form = $('#edit_form');
+			var url = form.attr("action");
+			var data = form.serialize();
+			if(!checkForm(data)){
+				alert('参数有误');
+				editObj.toast('参数有误');
+				return;
+			}
+			$.post(url, data, function (s) {
+				//回调
+				if (s.error) {
+					alert(s.data);
+					editObj.toast(s.data);
+				} else {
+					//保存成功
+					alert(s.data);
+					editObj.save();
+				}
+			});
+		}
+		function checkForm(data) {
+			if(data['periods'] != 'undefined' && isNaN(data['periods'])){
+				data['periods'] = parseInt(data['periods']);
+			}
+			return true;
+		}
+
+		$(window).load(function () {
+			//初始化滑动图片
+			var heights = $('.swiper-slide img').height();
+			$('.swiper-container').css({height: heights}); //获取图片自适应高度赋值
+			var swiper = new Swiper('.swiper-container', {
+				direction: 'horizontal',
+				freeMode: true,
+				slidesPerView: 'auto',
+				spaceBetween: 8,
+
+			});
+			//加载结束
+			$("#loading").fadeOut(300);
+			//
+			$('.grid_box').click(function () {
+//				$(this).find('input[type="text"]').click();
+//				editPost();
+//				alert(a);
+			});
+			$('.content input[name="summary"]').click({type: 'editSummary'}, editHandle);
+			$('.show_thumb').click(function () {
+				$('input[name="thumb"]').click();
+			});
+
+//			$('.content input[name="summary"]').on('click', {type: 'editSummary', summary: $(this).val()}, editHandle);
+//			$('.content .date').on('click', {type: 'editDate'}, editHandle);
+
+		});
+	</script>
+	<link rel="stylesheet" href="__PUBLIC__/dist/css/swiper.min.css">
+	<script src="__PUBLIC__/dist/js/swiper.min.js"></script>
+</head>
+<body>
+	<div id="loading">
+		<div id="loading-center">
+			<div id="loading-center-absolute">
+				<div class="object" id="object_one"></div>
+				<div class="object" id="object_two"></div>
+				<div class="object" id="object_three"></div>
+				<div class="object" id="object_four"></div>
+			</div>
+		</div>
+	</div>
+	<include file="Public/head"/>
+
+	<style>
+		html, body {
+			margin: 0px;
+			height: 100%;
+		}
+
+		input {
+			outline: none;
+		}
+
+		.swiper-slide {
+			width: 200px;
+		}
+
+		.grid_box {
+			width: 100%;
+			height: 100%;
+			padding-top: 16px;
+			padding-bottom: 16px;
+			border-bottom: solid 1px rgba(0, 0, 0, 0.12);
+		}
+
+		.title {
+			width: 100%;
+			height: 100%;
+			font-family: PingFangSC-Regular;
+			color: #2F3336;
+		}
+
+		.content {
+			width: 100%;
+			height: 100%;
+			margin-top: 8px;
+			font-family: PingFangSC-Light;
+			color: #7F858A;
+		}
+
+		.title, .content {
+			opacity: 0.87;
+			font-size: 16px;
+			letter-spacing: 0;
+		}
+
+		.content input {
+			border: none;
+			width: 100%;
+		}
+
+		.content input[type="date"]{
+			background: transparent;
+		}
+
+		.pre-video img {
+			width: 200px;
+			height: 124px;
+			float: left;
+		}
+
+		.show_thumb img {
+			width: 100%;
+			height: 100%;
+			max-height: 250px;
+		}
+
+		.show_name {
+			width: 100%;
+			height: 100%;
+			opacity: 0.87;
+			font-family: PingFangSC-Medium;
+			font-size: 24px;
+			color: #2F3336;
+			letter-spacing: 0;
+		}
+
+		.summary input {
+			text-overflow: ellipsis;
+		}
+
+		.read_more {
+			color: #29A1F7;
+		}
+	</style>
+	<style>
+		#loading {
+			background-color: #FFFFFF;
+			height: 100%;
+			width: 100%;
+			position: fixed;
+			z-index: 999;
+			margin-top: 0px;
+			top: 0px;
+		}
+
+		#loading-center {
+			width: 100%;
+			height: 100%;
+			position: relative;
+		}
+
+		#loading-center-absolute {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			height: 20px;
+			width: 140px;
+			margin-top: -10px;
+			margin-left: -70px;
+			-webkit-animation: loading-center-absolute 1s infinite;
+			animation: loading-center-absolute 1s infinite;
+
+		}
+
+		.object {
+			width: 20px;
+			height: 20px;
+			background-color: #29A1F7;
+			float: left;
+			-moz-border-radius: 50% 50% 50% 50%;
+			-webkit-border-radius: 50% 50% 50% 50%;
+			border-radius: 50% 50% 50% 50%;
+			margin-right: 20px;
+			margin-bottom: 20px;
+		}
+
+		.object:last-child {
+			margin-right: 0px;
+
+		}
+
+		#object_one {
+			-webkit-animation: object_one 1s infinite;
+			animation: object_one 1s infinite;
+		}
+
+		#object_two {
+			-webkit-animation: object_two 1s infinite;
+			animation: object_two 1s infinite;
+		}
+
+		#object_three {
+			-webkit-animation: object_three 1s infinite;
+			animation: object_three 1s infinite;
+		}
+
+		#object_four {
+			-webkit-animation: object_four 1s infinite;
+			animation: object_four 1s infinite;
+		}
+
+		@-webkit-keyframes loading-center-absolute {
+			100% {
+				-ms-transform: rotate(360deg);
+				-webkit-transform: rotate(360deg);
+				transform: rotate(360deg);
+			}
+
+		}
+
+		@keyframes loading-center-absolute {
+			100% {
+				-ms-transform: rotate(360deg);
+				-webkit-transform: rotate(360deg);
+				transform: rotate(360deg);
+			}
+		}
+
+		@-webkit-keyframes object_one {
+			50% {
+				-ms-transform: translate(20px, 20px);
+				-webkit-transform: translate(20px, 20px);
+				transform: translate(20px, 20px);
+			}
+		}
+
+		@keyframes object_one {
+			50% {
+				-ms-transform: translate(20px, 20px);
+				-webkit-transform: translate(20px, 20px);
+				transform: translate(20px, 20px);
+			}
+		}
+
+		@-webkit-keyframes object_two {
+			50% {
+				-ms-transform: translate(-20px, 20px);
+				-webkit-transform: translate(-20px, 20px);
+				transform: translate(-20px, 20px);
+			}
+		}
+
+		@keyframes object_two {
+			50% {
+				-ms-transform: translate(-20px, 20px);
+				-webkit-transform: translate(-20px, 20px);
+				transform: translate(-20px, 20px);
+			}
+		}
+
+		@-webkit-keyframes object_three {
+			50% {
+				-ms-transform: translate(20px, -20px);
+				-webkit-transform: translate(20px, -20px);
+				transform: translate(20px, -20px);
+			}
+		}
+
+		@keyframes object_three {
+			50% {
+				-ms-transform: translate(20px, -20px);
+				-webkit-transform: translate(20px, -20px);
+				transform: translate(20px, -20px);
+			}
+		}
+
+		@-webkit-keyframes object_four {
+			50% {
+				-ms-transform: translate(-20px, -20px);
+				-webkit-transform: translate(-20px, -20px);
+				transform: translate(-20px, -20px);
+			}
+		}
+
+		@keyframes object_four {
+			50% {
+				-ms-transform: translate(-20px, -20px);
+				-webkit-transform: translate(-20px, -20px);
+				transform: translate(-20px, -20px);
+			}
+		}
+	</style>
+	<!-- PastEvents -->
+	<div class="show_thumb">
+		<img src="{$show.thumb|default='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488633816726&di=769192ec8756041ba0a0ab5a12d8dd8c&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fe850352ac65c10381d59f42cb6119313b07e893c.jpg'}">
+	</div>
+	<div class="container" style="padding-left: 16px; padding-right: 16px;">
+		<!-- Content -->
+		<div class="show_box">
+			<form id="edit_form" action="{:U('Show/editShow')}" method="post" autocomplete="off">
+				<div><input name="id" type="text" value="{$show.id}" style="display:none;"></div>
+				<div><input name="thumb" type="file" value="{$show.thumb}" style="display:none;"></div>
+				<div class="grid_box">
+					<div class="title"><span>节目名称：</span></div>
+					<div class="content"><input name="name" type="text" value="{$show.name}"></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>导演：</span></div>
+					<div class="content"><input name="director" type="text" value="{$show.director}"/></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>简介：</span></div>
+					<div class="content summary"><input name="summary" type="text" readonly="readonly"
+														value="{$show.summary}"/></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>预告片／剧照</span></div>
+					<div class="content pre-video swiper-container">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide"><img
+									src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505452&di=2e895f99ade0de678e5b37ae812097e4&imgtype=0&src=http%3A%2F%2Fimage14.m1905.cn%2Fuploadfile%2F2016%2F0610%2F20160610094214956467_watermark.jpg">
+							</div>
+							<div class="swiper-slide"><img
+									src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505452&di=c136723ec86d12095fa55a7d53f562b4&imgtype=0&src=http%3A%2F%2Fh7.86.cc%2Fwalls%2F20160803%2F1440x900_f8c44b5e1ee4771.jpg">
+							</div>
+							<div class="swiper-slide"><img
+									src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505449&di=c8965141a69a96c198c1e2fd893a9dd0&imgtype=0&src=http%3A%2F%2Fwww.binzz.com%2Fuploads%2Fimage%2F20170214%2F1487089115101391.jpg">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>类型：</span></div>
+					<div class="content"><input name="ptype" type="text" value="{$show.ptype}"/></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>预计上线时间：</span></div>
+					<div class="content"><input class="date" name="expected_tv_startdate" type="date"
+												value="{$show.expected_tv_startdate}"/></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>网络播放平台：</span></div>
+					<div class="content"><input name="distribution_platform" type="text"
+												value="{$show.distribution_platform}"/></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>卫视平台：</span></div>
+					<div class="content"><input name="tv_platform" type="text" value="{$show.tv_platform}"/></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>出品公司：</span></div>
+					<div class="content"><input name="company" type="text" value="{$show.company}"/></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>影视期数</span></div>
+					<div class="content"><input name="periods" type="text" value="{$show.periods}"/></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>营销等级</span></div>
+					<div class="content"><input name="marketing_grading" type="text"
+												value="{$show.marketing_grading}"/></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>更新方式</span></div>
+					<div class="content"><input name="update_mode" type="text" value="{$show.update_mode}"/></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>主演阵容：</span></div>
+					<div class="content"><input name="cast" type="text" value="{$show.cast}"/></div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>招商状态：</span></div>
+					<div class="content"><input name="investment_status" type="text" value="{$show.investment_status}"/>
+					</div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>招商开始时间</span></div>
+					<div class="content"><input class="date" name="start_date" type="date" value="{$show.start_date}"/>
+					</div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>招商结束时间</span></div>
+					<div class="content"><input class="date" name="end_date" type="date" value="{$show.end_date}"/>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<hr>
+	<include file="Public/foot"/>
+	<script type="text/javascript">
+
+	</script>
+</body>
+</html>

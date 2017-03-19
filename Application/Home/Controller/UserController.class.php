@@ -46,7 +46,7 @@ class UserController extends BaseController {
             }
             //登录
             $where['password'] = MD5($password);
-            $user = $User->where($where)->find();
+            $user = $User->relation('user_group')->where($where)->find();
             if(empty($user)){
                 $this->ajaxReturn(array('error'=>true, 'data'=>'密码错误'));
             }else{
@@ -235,6 +235,7 @@ class UserController extends BaseController {
      * 添加收藏
      */
     public function addFavorite(){
+        phpinfo();die(1);
         $Favorite = D('user_favorite');
         //检查登录状态
         if(check_login()){

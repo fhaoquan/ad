@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<title>节目信息</title>
+	<title>添加节目</title>
 	<!-- Bootstrap Core CSS -->
 	<link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet">
 	<!-- jQuery -->
@@ -21,6 +21,9 @@
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	<script>
+		function setText(text) {
+			$('#showName').val(text);
+		}
 		$(window).load(function(){
 //			//$("#loading").delay(2000).fadeOut(500);
 //			$("#loading-center").click(function() {
@@ -39,11 +42,7 @@
 			});
 
 			//加载结束
-			$('#loading').fadeOut(500);
-			//
-			$('.read_more').click(function () {
-				
-			});
+			$("#loading").fadeOut(500);
 		});
 	</script>
 	<link rel="stylesheet" href="__PUBLIC__/dist/css/swiper.min.css">
@@ -321,13 +320,17 @@
 		<!-- Content -->
 		<div class="show_box">
 			<div class="grid_box">
-				<div class="show_name">三生三世十里桃花</div>
+				<div class="title">导演：</div>
+				<div class="content"><span class="read_more">林玉芬</span></div>
+			</div>
+			<div class="grid_box">
+				<div class="show_name"></div>
 				<div class="content"><span>导演：</span><span class="read_more">林玉芬</span></div>
 			</div>
 			<div class="grid_box">
 				<div class="title"><span>简介：</span></div>
-				<div class="content"><span>《三生三世十里桃花》是作家唐七的成名之作，也是“三生三世”系列第一部，故事讲述了青丘帝姬白浅和九重天太子夜华的三生爱恨、三世纠葛。由阿里影业、儒意影业联合出品…</span><a href="javascript:;"
-						class="read_more">阅读更多</a></div>
+				<div class="content"><span>《三生三世十里桃花》是作家唐七的成名之作，也是“三生三世”系列第一部，故事讲述了青丘帝姬白浅和九重天太子夜华的三生爱恨、三世纠葛。由阿里影业、儒意影业联合出品…</span><span
+						class="read_more">阅读更多</span></div>
 			</div>
 			<div class="grid_box">
 				<div class="title"><span>预告片／剧照</span></div>

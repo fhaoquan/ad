@@ -51,10 +51,10 @@ class ContentController extends BaseController {
         $id=I('id');
 		if(IS_POST){
 			if($typeid==0) $this->error('分类不能为空！');
-			$db=D($model);
-			$data=$db->create();
-			$data['uptime']=time();
-			$type=D('type')->find($typeid);
+            $db=D($model);
+            $data=$db->create();
+            $data['uptime']=time();
+            $type=D('type')->find($typeid);
 
 			$db->save($data);
 			$this->success('修改完成',U('index',array('model'=>$model)));

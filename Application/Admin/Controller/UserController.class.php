@@ -40,10 +40,10 @@ Vendor('ThinkphpUcenter.UcApi');
                 if($password=='') $this->error('密码不能为空！');
                 if($email=='') $this->error('邮箱不能为空！');
 
-                $reg = UcApi::reg(I('username'), I('password'), I('email'));
-                if($reg <= 0){
-                    $this->error(UcApi::getError());
-                }else{
+//                $reg = UcApi::reg(I('username'), I('password'), I('email'));
+//                if($reg <= 0){
+//                    $this->error(UcApi::getError());
+//                }else{
                     $count=M('user')->where(array('username'=>$username))->count();
                     if($count) $this->error('用户名已存在！');
                     $password=md5($password);
@@ -53,7 +53,7 @@ Vendor('ThinkphpUcenter.UcApi');
                     $data['password']=$password;
                     $db->add($data);
                     $this->success('添加会员成功！');
-                }
+//                }
 
             }else{
                 $where['sys'] = array('neq',1);
@@ -71,7 +71,7 @@ Vendor('ThinkphpUcenter.UcApi');
                 $email=str_replace(' ','',I('email'));
                 $password=I('password');
                 if($username=='') $this->error('用户名不能为空！');
-                if($email=='') $this->error('邮箱不能为空！');
+//                if($email=='') $this->error('邮箱不能为空！');
 
                 $where=array();
                 $where['username']=array('eq',$username);
@@ -92,8 +92,8 @@ Vendor('ThinkphpUcenter.UcApi');
                 }
                 $ucdata['email'] = $email;
                 //修改ucenter用户名密码等
-                $ret = UcApi::edit($ucdata);
-                if(!$ret) $this->error(UcApi::getError());
+//                $ret = UcApi::edit($ucdata);
+//                if(!$ret) $this->error(UcApi::getError());
                 //修改本站用户
                 $db->where(array('id'=>I('id')))->save($data);
                 $this->success('修改会员成功！');
