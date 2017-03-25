@@ -20,6 +20,7 @@
 	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<script src="__PUBLIC__/js/ajaxfileupload.js"></script>
 	<script>
 		function setText(text) {
 			$('#showName').val(text);
@@ -29,9 +30,9 @@
 			switch (type) {
 				case 'editSummary': {
 					var summary = $(this).val();
-					if((summary != 'undefined') && (summary != '')){
+					if ((summary != 'undefined') && (summary != '')) {
 						editObj.editSummary(summary);
-					}else{
+					} else {
 						editObj.editSummary(null);
 					}
 				}
@@ -43,9 +44,9 @@
 				case 'editDate': {
 					var date = $(this).val();
 					var newDate;
-					if((date != 'undefined') && (date != '')){
+					if ((date != 'undefined') && (date != '')) {
 						newDate = editObj.editDate(date);
-					}else{
+					} else {
 						newDate = editObj.editDate(null);
 					}
 					alert(newDate);
@@ -60,8 +61,8 @@
 		function editPost() {
 			var form = $('#edit_form');
 			var url = form.attr("action");
-			var data = form.serialize();
-			if(!checkForm(data)){
+			var data = form.serializeArray();
+			if (!checkForm(data)) {
 				alert('参数有误');
 				editObj.toast('参数有误');
 				return;
@@ -79,10 +80,111 @@
 			});
 		}
 		function checkForm(data) {
-			if(data['periods'] != 'undefined' && isNaN(data['periods'])){
-				data['periods'] = parseInt(data['periods']);
+			var json = {};
+			$.each(data, function(i, field){
+				if(field.value != ''){
+					json[field.name] = field.value;
+				}
+			});
+
+			if(typeof (json['name']) == 'undefined'){
+				alert('名称不能为空');
+				return false;
+			}
+			if (typeof (json['periods']) != 'undefined' && isNaN(json['periods'])) {
+				alert('请填写数字');
+				return false;
 			}
 			return true;
+		}
+		function getObjectURL(file) {
+			var url = null;
+			if (window.createObjectURL != undefined) { // basic
+				url = window.createObjectURL(file);
+			} else if (window.URL != undefined) { // mozilla(firefox)
+				url = window.URL.createObjectURL(file);
+			} else if (window.webkitURL != undefined) { // webkit or chrome
+				url = window.webkitURL.createObjectURL(file);
+			}
+			return url;
+		}
+		function uploadImg(img){
+			//上传图片
+			$('.show_thumb .loading').show();
+			//上传图片
+			$.ajaxFileUpload(
+					{
+						url: "{:U('Upload/index')}",
+						secureuri: false,
+						fileElementId: 'thumb',
+						dataType: 'json',
+						success: function (data, status)  //服务器成功响应处理函数
+						{
+							if (typeof (data.error) != 'undefined') {
+								if (!data.error) {
+									//图片链接
+									var img = data.data;
+									if (img) {
+										$('.show_thumb img').attr('src', img);
+									}
+								} else {
+									alert(data.data);
+								}
+							}
+							//结束加载动画
+							$('.show_thumb .loading').hide();
+						},
+						error: function (data, status, e)//服务器响应失败处理函数
+						{
+							alert(e);
+							//结束加载动画
+							$('.show_thumb .loading').hide();
+						}
+					}
+			);
+		}
+
+		function showThumb() {
+			//上传图片
+//			var files = this.files[0];
+//			var thumb = getObjectURL(this.files[0]);
+			//设置加载动画
+			$('.show_thumb .loading').show();
+			//上传图片
+			$.ajaxFileUpload(
+					{
+						url: "{:U('Upload/index')}",
+						secureuri: false,
+						fileElementId: 'thumb',
+						dataType: 'json',
+						success: function (data, status)  //服务器成功响应处理函数
+						{
+							if (typeof (data.error) != 'undefined') {
+								if (!data.error) {
+									//图片链接
+									var img = data.data;
+									if (img) {
+										$('.show_thumb img').attr('src', img);
+									}
+								} else {
+									alert(data.data);
+								}
+							}
+							//结束加载动画
+							$('.show_thumb .loading').hide();
+						},
+						error: function (data, status, e)//服务器响应失败处理函数
+						{
+							alert(e);
+							//结束加载动画
+							$('.show_thumb .loading').hide();
+						}
+					}
+			);
+//			var thumb = getObjectURL(this.files[0]);
+//			if(thumb){
+//				$('.show_thumb img').attr('src', thumb);
+//			}
 		}
 
 		$(window).load(function () {
@@ -108,6 +210,7 @@
 			$('.show_thumb').click(function () {
 				$('input[name="thumb"]').click();
 			});
+//			$('#thumb').on('change', showThumb);
 
 //			$('.content input[name="summary"]').on('click', {type: 'editSummary', summary: $(this).val()}, editHandle);
 //			$('.content .date').on('click', {type: 'editDate'}, editHandle);
@@ -178,7 +281,7 @@
 			width: 100%;
 		}
 
-		.content input[type="date"]{
+		.content input[type="date"] {
 			background: transparent;
 		}
 
@@ -188,10 +291,23 @@
 			float: left;
 		}
 
+		.show_thumb {
+			position: relative;
+			text-align: center;
+		}
+
 		.show_thumb img {
 			width: 100%;
 			height: 100%;
 			max-height: 250px;
+		}
+
+		.loading {
+			width: 100%;
+			height: 100%;
+			max-height: 250px;
+			position: absolute;
+			z-index: 999;
 		}
 
 		.show_name {
@@ -362,14 +478,16 @@
 	</style>
 	<!-- PastEvents -->
 	<div class="show_thumb">
+		<div class="loading" style="display: none;">加载中...</div>
 		<img src="{$show.thumb|default='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488633816726&di=769192ec8756041ba0a0ab5a12d8dd8c&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fe850352ac65c10381d59f42cb6119313b07e893c.jpg'}">
 	</div>
 	<div class="container" style="padding-left: 16px; padding-right: 16px;">
 		<!-- Content -->
 		<div class="show_box">
 			<form id="edit_form" action="{:U('Show/editShow')}" method="post" autocomplete="off">
-				<div><input name="id" type="text" value="{$show.id}" style="display:none;"></div>
-				<div><input name="thumb" type="file" value="{$show.thumb}" style="display:none;"></div>
+				<div><input id="id" name="id" type="text" value="{$show.id}" style="display:none;"></div>
+				<div><input id="thumb" name="thumb" type="file" value="{$show.thumb}" onchange="showThumb();"
+							style="display:none;"></div>
 				<div class="grid_box">
 					<div class="title"><span>节目名称：</span></div>
 					<div class="content"><input name="name" type="text" value="{$show.name}"></div>

@@ -7,10 +7,10 @@ return array(
         'saveName' => array('uniqid', ''),
         'driver' => 'Qiniu',
         'driverConfig' => array(
-            'accessKey' => 'uu6e1M-dpei-bM3sj9PAyeecYqqVcRgy8wyvgBwG',
-            'secrectKey' => 'rxcWB4ZBM9ZpIk7ws3OQLlHhQ3htD1gH7YrqUvvW',
-            'domain' => 'img.ui100day.com',
-            'bucket' => 'ui100day',
+            'accessKey' => 'GWdNy10cRt4M0WesoLjQdBiCPkQF7C-dMR7VPz96',
+            'secretKey' => 'fJq9cTrJ-5Ah2oWaHC5-hnuPL1iBYWA1KcC4AbYk',
+            'domain' => 'on2ilbqnc.bkt.clouddn.com',
+            'bucket' => 'advisement',
         ),
     ),
     // 加载扩展配置文件

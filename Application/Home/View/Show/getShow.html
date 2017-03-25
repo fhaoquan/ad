@@ -21,7 +21,7 @@
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	<script>
-		$(window).load(function(){
+		$(window).load(function () {
 //			//$("#loading").delay(2000).fadeOut(500);
 //			$("#loading-center").click(function() {
 //				$("#loading").fadeOut(500);
@@ -40,9 +40,15 @@
 
 			//加载结束
 			$('#loading').fadeOut(500);
-			//
-			$('.read_more').click(function () {
-				
+			//显示更多
+			$('.read_more').on('click', function () {
+				if ($(this).html() == '阅读更多') {
+					$(this).html('收起');
+					$(this).prev().css('height', 'auto');
+				} else {
+					$(this).html('阅读更多');
+					$(this).prev().css('height', '66px');
+				}
 			});
 		});
 	</script>
@@ -63,7 +69,7 @@
 	<include file="Public/head"/>
 
 	<style>
-		html, body{
+		html, body {
 			margin: 0px;
 			height: 100%;
 		}
@@ -81,11 +87,11 @@
 		}
 
 		.grid_row_box {
-			display: -webkit-flex;  /* 新版本语法: Chrome 21+ */
-			display: flex;          /* 新版本语法: Opera 12.1, Firefox 22+ */
-			display: -webkit-box;   /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
-			display: -moz-box;      /* 老版本语法: Firefox (buggy) */
-			display: -ms-flexbox;   /* 混合版本语法: IE 10 */
+			display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+			display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+			display: -webkit-box; /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+			display: -moz-box; /* 老版本语法: Firefox (buggy) */
+			display: -ms-flexbox; /* 混合版本语法: IE 10 */
 
 			-webkit-flex-direction: row;
 			-moz-flex-direction: row;
@@ -96,17 +102,17 @@
 		}
 
 		.grid_column_box {
-			display: -webkit-flex;  /* 新版本语法: Chrome 21+ */
-			display: flex;          /* 新版本语法: Opera 12.1, Firefox 22+ */
-			display: -webkit-box;   /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
-			display: -moz-box;      /* 老版本语法: Firefox (buggy) */
-			display: -ms-flexbox;   /* 混合版本语法: IE 10 */
+			display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+			display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+			display: -webkit-box; /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+			display: -moz-box; /* 老版本语法: Firefox (buggy) */
+			display: -ms-flexbox; /* 混合版本语法: IE 10 */
 
-			-webkit-flex: 1;        /* Chrome */
-			-ms-flex: 1;            /* IE 10 */
-			flex: 1;                /* NEW, Spec - Opera 12.1, Firefox 20+ */
-			-webkit-box-flex: 1;    /* OLD - iOS 6-, Safari 3.1-6 */
-			-moz-box-flex: 1;       /* OLD - Firefox 19- */
+			-webkit-flex: 1; /* Chrome */
+			-ms-flex: 1; /* IE 10 */
+			flex: 1; /* NEW, Spec - Opera 12.1, Firefox 20+ */
+			-webkit-box-flex: 1; /* OLD - iOS 6-, Safari 3.1-6 */
+			-moz-box-flex: 1; /* OLD - Firefox 19- */
 
 			-webkit-flex-direction: column;
 			-moz-flex-direction: column;
@@ -177,12 +183,41 @@
 			letter-spacing: 0;
 		}
 
+		.summary{
+			position: relative;
+		}
+
+		.summary div {
+			/*display:-webkit-box; //将对象作为弹性伸缩盒子模型显示。*/
+		/*-webkit-box-orient:vertical; //从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）*/
+		/*-webkit-line-clamp:2; //这个属性不是css的规范属性，需要组合上面两个属性，表示显示的行数。*/
+			text-overflow: ellipsis;
+			overflow: hidden;
+			margin: 0;
+			height: 66px;
+		}
+
 		.read_more {
+			position: absolute;
+			color: #29A1F7;
+			text-decoration: none;
+			bottom: 0;
+			right: 0;
+			padding-left: 6px;
+			background: #fff;
+		}
+
+		.read_more:hover {
+			color: #29A1F7;
+			text-decoration: none;
+		}
+
+		.director {
 			color: #29A1F7;
 		}
 	</style>
 	<style>
-		#loading{
+		#loading {
 			background-color: #FFFFFF;
 			height: 100%;
 			width: 100%;
@@ -191,11 +226,13 @@
 			margin-top: 0px;
 			top: 0px;
 		}
-		#loading-center{
+
+		#loading-center {
 			width: 100%;
 			height: 100%;
 			position: relative;
 		}
+
 		#loading-center-absolute {
 			position: absolute;
 			left: 50%;
@@ -204,129 +241,145 @@
 			width: 140px;
 			margin-top: -10px;
 			margin-left: -70px;
-			 -webkit-animation: loading-center-absolute 1s infinite;
+			-webkit-animation: loading-center-absolute 1s infinite;
 			animation: loading-center-absolute 1s infinite;
 
 		}
-		.object{
+
+		.object {
 			width: 20px;
 			height: 20px;
 			background-color: #29A1F7;
 			float: left;
-			 -moz-border-radius: 50% 50% 50% 50%;
-			 -webkit-border-radius: 50% 50% 50% 50%;
+			-moz-border-radius: 50% 50% 50% 50%;
+			-webkit-border-radius: 50% 50% 50% 50%;
 			border-radius: 50% 50% 50% 50%;
 			margin-right: 20px;
 			margin-bottom: 20px;
 		}
+
 		.object:last-child {
 			margin-right: 0px;
 
 		}
-		#object_one{
-			 -webkit-animation: object_one 1s infinite;
+
+		#object_one {
+			-webkit-animation: object_one 1s infinite;
 			animation: object_one 1s infinite;
 		}
-		#object_two{
-			 -webkit-animation: object_two 1s infinite;
+
+		#object_two {
+			-webkit-animation: object_two 1s infinite;
 			animation: object_two 1s infinite;
 		}
-		#object_three{
-			 -webkit-animation: object_three 1s infinite;
+
+		#object_three {
+			-webkit-animation: object_three 1s infinite;
 			animation: object_three 1s infinite;
 		}
-		#object_four{
-			 -webkit-animation: object_four 1s infinite;
+
+		#object_four {
+			-webkit-animation: object_four 1s infinite;
 			animation: object_four 1s infinite;
 		}
 
-		@-webkit-keyframes loading-center-absolute{
+		@-webkit-keyframes loading-center-absolute {
 			100% {
-				 -ms-transform: rotate(360deg);
-				 -webkit-transform: rotate(360deg);
+				-ms-transform: rotate(360deg);
+				-webkit-transform: rotate(360deg);
 				transform: rotate(360deg);
 			}
 
 		}
-		@keyframes loading-center-absolute{
+
+		@keyframes loading-center-absolute {
 			100% {
-				 -ms-transform: rotate(360deg);
-				 -webkit-transform: rotate(360deg);
+				-ms-transform: rotate(360deg);
+				-webkit-transform: rotate(360deg);
 				transform: rotate(360deg);
 			}
 		}
-		@-webkit-keyframes object_one{
+
+		@-webkit-keyframes object_one {
 			50% {
-				 -ms-transform: translate(20px,20px);
-				 -webkit-transform: translate(20px,20px);
-				transform: translate(20px,20px);
+				-ms-transform: translate(20px, 20px);
+				-webkit-transform: translate(20px, 20px);
+				transform: translate(20px, 20px);
 			}
 		}
-		@keyframes object_one{
+
+		@keyframes object_one {
 			50% {
-				 -ms-transform: translate(20px,20px);
-				 -webkit-transform: translate(20px,20px);
-				transform: translate(20px,20px);
+				-ms-transform: translate(20px, 20px);
+				-webkit-transform: translate(20px, 20px);
+				transform: translate(20px, 20px);
 			}
 		}
-		@-webkit-keyframes object_two{
+
+		@-webkit-keyframes object_two {
 			50% {
-				 -ms-transform: translate(-20px,20px);
-				 -webkit-transform: translate(-20px,20px);
-				transform: translate(-20px,20px);
+				-ms-transform: translate(-20px, 20px);
+				-webkit-transform: translate(-20px, 20px);
+				transform: translate(-20px, 20px);
 			}
 		}
-		@keyframes object_two{
+
+		@keyframes object_two {
 			50% {
-				 -ms-transform: translate(-20px,20px);
-				 -webkit-transform: translate(-20px,20px);
-				transform: translate(-20px,20px);
+				-ms-transform: translate(-20px, 20px);
+				-webkit-transform: translate(-20px, 20px);
+				transform: translate(-20px, 20px);
 			}
 		}
-		@-webkit-keyframes object_three{
+
+		@-webkit-keyframes object_three {
 			50% {
-				 -ms-transform: translate(20px,-20px);
-				 -webkit-transform: translate(20px,-20px);
-				transform: translate(20px,-20px);
+				-ms-transform: translate(20px, -20px);
+				-webkit-transform: translate(20px, -20px);
+				transform: translate(20px, -20px);
 			}
 		}
-		@keyframes object_three{
+
+		@keyframes object_three {
 			50% {
-				 -ms-transform: translate(20px,-20px);
-				 -webkit-transform: translate(20px,-20px);
-				transform: translate(20px,-20px);
+				-ms-transform: translate(20px, -20px);
+				-webkit-transform: translate(20px, -20px);
+				transform: translate(20px, -20px);
 			}
 		}
-		@-webkit-keyframes object_four{
+
+		@-webkit-keyframes object_four {
 			50% {
-				 -ms-transform: translate(-20px,-20px);
-				 -webkit-transform: translate(-20px,-20px);
-				transform: translate(-20px,-20px);
+				-ms-transform: translate(-20px, -20px);
+				-webkit-transform: translate(-20px, -20px);
+				transform: translate(-20px, -20px);
 			}
 		}
-		@keyframes object_four{
+
+		@keyframes object_four {
 			50% {
-				 -ms-transform: translate(-20px,-20px);
-				 -webkit-transform: translate(-20px,-20px);
-				transform: translate(-20px,-20px);
+				-ms-transform: translate(-20px, -20px);
+				-webkit-transform: translate(-20px, -20px);
+				transform: translate(-20px, -20px);
 			}
 		}
 	</style>
 	<!-- PastEvents -->
 	<div class="show_thumb">
 		<!--<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488633816726&di=769192ec8756041ba0a0ab5a12d8dd8c&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fe850352ac65c10381d59f42cb6119313b07e893c.jpg">-->
-		<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700717933&di=7132c6049e5f7d637a8f81e8c92929a3&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2Fa2973ecbee4c8f4d9cdcc52d785a47249e24a5be.jpg">
+		<img src="{$show.thumb|default='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700717933&di=7132c6049e5f7d637a8f81e8c92929a3&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2Fa2973ecbee4c8f4d9cdcc52d785a47249e24a5be.jpg'}">
 	</div>
 	<div class="container" style="padding-left: 16px; padding-right: 16px;">
 		<!-- Content -->
 		<div class="show_box">
 			<div class="grid_box">
-				<div class="show_name">三生三世十里桃花</div>
-				<div class="content"><span>导演：</span><span class="read_more">林玉芬</span></div>
+				<div class="show_name">{$show.name}</div>
+				<div class="content"><span>导演：</span><span class="director">{$show.director|default='无'}</span></div>
 			</div>
 			<div class="grid_box">
 				<div class="title"><span>简介：</span></div>
-				<div class="content"><span>《三生三世十里桃花》是作家唐七的成名之作，也是“三生三世”系列第一部，故事讲述了青丘帝姬白浅和九重天太子夜华的三生爱恨、三世纠葛。由阿里影业、儒意影业联合出品…</span><a href="javascript:;"
+				<div class="content summary"><div>{$show.summary|default='《三生三世十里桃花》是作家唐七的成名之作，也是“三生三世”系列第一部，故事讲述了青丘帝姬白浅和九重天太子夜华的三生爱恨、三世纠葛。由阿里影业、儒意影业联合出品'}</div><a
+						href="javascript:;"
 						class="read_more">阅读更多</a></div>
 			</div>
 			<div class="grid_box">
@@ -347,51 +400,51 @@
 			</div>
 			<div class="grid_box">
 				<div class="title"><span>类型：</span></div>
-				<div class="content"><span>古装、爱情、仙侠、玄幻</span></div>
+				<div class="content"><span>{$show.ptype}</span></div>
 			</div>
 			<div class="grid_box">
 				<div class="title"><span>预计上线时间：</span></div>
-				<div class="content"><span>2017年1月30日</span></div>
+				<div class="content"><span>{$show.expected_tv_startdate}</span></div>
 			</div>
 			<div class="grid_box">
 				<div class="title"><span>网络播放平台：</span></div>
-				<div class="content"><span>优酷、爱奇艺、腾讯、搜狐视频、乐视</span></div>
+				<div class="content"><span>{$show.distribution_platform}</span></div>
 			</div>
 			<div class="grid_box">
 				<div class="title"><span>卫视平台：</span></div>
-				<div class="content"><span>浙江卫视、东方卫视</span></div>
+				<div class="content"><span>{$show.tv_platform}</span></div>
 			</div>
 			<div class="grid_box">
 				<div class="title"><span>出品公司：</span></div>
-				<div class="content"><span>剧酷传播、嘉行传媒、三味火</span></div>
+				<div class="content"><span>{$show.company}</span></div>
 			</div>
 			<div class="grid_box">
 				<div class="grid_row_box">
 					<div class="grid_column_box">
 						<div class="title"><span>影视期数</span></div>
-						<div class="content"><span>58集</span></div>
+						<div class="content"><span>{$show.periods}集</span></div>
 					</div>
 					<div class="grid_column_box">
 						<div class="title"><span>营销等级</span></div>
-						<div class="content"><span>S级</span></div>
+						<div class="content"><span>{$show.marketing_grading}级</span></div>
 					</div>
 					<div class="grid_column_box">
 						<div class="title"><span>更新方式</span></div>
-						<div class="content"><span>日更新</span></div>
+						<div class="content"><span>{$show.update_mode}</span></div>
 					</div>
 				</div>
 			</div>
 			<div class="grid_box">
 				<div class="title"><span>主演阵容：</span></div>
-				<div class="content"><span>杨幂、赵又廷、张智尧 、迪丽热巴、高伟光</span></div>
+				<div class="content"><span>{$show.cast}</span></div>
 			</div>
 			<div class="grid_box">
 				<div class="title"><span>招商状态：</span></div>
-				<div class="content"><span>招商中</span></div>
+				<div class="content"><span>{$show.investment_status}</span></div>
 			</div>
 			<div class="grid_box">
 				<div class="title"><span>招商时间</span></div>
-				<div class="content"><span>2016年11月30日 至 2017年1月20</span></div>
+				<div class="content"><span>{$show.start_date|default='-'} 至 {$show.end_date|default='-'}</span></div>
 			</div>
 		</div>
 	</div>

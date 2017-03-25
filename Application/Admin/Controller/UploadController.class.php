@@ -13,7 +13,6 @@ class UploadController extends BaseController{
         $info = $Upload->upload($_FILES);
 
         if (!$info) {// 上传错误提示错误信息
-            //echo $upload->getErrorMsg();
             echo 'error';
         } else {// 上传成功
             foreach($info as $file){

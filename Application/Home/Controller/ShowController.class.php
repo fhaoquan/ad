@@ -82,15 +82,32 @@ class ShowController extends BaseController {
         }
     }
 
+    /**
+     * 添加节目详细信息
+     */
     public function addShow() {
+        $Show = D('show');
 
         if (IS_POST) {
+            $data=$Show->create();
+            $data['ctime']=time();
+            $data['uptime']=time();
 
+            //添加节目
+            $res = $Show->add($data);
+            if(!$res){
+                $this->ajaxReturn(array('error' => true, 'data' => '添加失败'));
+            }else{
+                $this->ajaxReturn(array('error' => false, 'data' => $res));
+            }
         } else {
             $this->display();
         }
     }
 
+    /**
+     * 修改节目详细信息
+     */
     public function editShow() {
         $Show = D('show');
         //接收参数
@@ -101,6 +118,7 @@ class ShowController extends BaseController {
                 $this->ajaxReturn(array('error' => true, 'data' => 'id不能为空'));
             }
             $data=$Show->create();
+
             $data['uptime']=time();
 
             //修改节目
@@ -127,9 +145,29 @@ class ShowController extends BaseController {
         }
     }
 
+    /**
+     * 删除节目
+     */
     public function deleteShow() {
+        $Show = D('show');
+        //接收参数
+        $id = I('id');
         if (IS_POST) {
+            //参数检查
+            if (!$id) {
+                $this->ajaxReturn(array('error' => true, 'data' => 'id不能为空'));
+            }
+            $count = $Show->count($id);
+            if(!$count){
+                $this->ajaxReturn(array('error' => true, 'data' => '节目不存在'));
+            }
 
+            $res = $Show->where(array('id'=>$id))->delete();
+            if($res){
+                $this->ajaxReturn(array('error' => false, 'data' => '删除成功'));
+            }else{
+                $this->ajaxReturn(array('error' => true, 'data' => '删除失败'));
+            }
         } else {
             $this->display();
         }
