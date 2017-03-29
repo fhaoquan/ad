@@ -35,7 +35,7 @@ class ShowController extends BaseController {
 //            $this->ajaxReturn(array('error'=>true,'data'=>'筛选类型有误'));
 //        }
         //分页查询节目信息列表
-        $list = $Show->where($filter)->relation(true)->limit($perpage)->page($page)->select();
+        $list = $Show->where($filter)->relation(true)->limit($perpage)->page($page)->order('recommanded desc, ctime desc')->select();
         foreach ($list as $index => $item) {
             $list[$index]['casts'] = array_column($item['casts'], 'name');
             $list[$index]['directors'] = array_column($item['directors'], 'name');
@@ -92,7 +92,15 @@ class ShowController extends BaseController {
             $data=$Show->create();
             $data['ctime']=time();
             $data['uptime']=time();
-
+            //节目定位转化
+            if(!empty($data['localization'])){
+                $localid = D('localization')->where(array('name', $data['localization']))->field('id');
+                if($localid){
+                    $data['localization'] = $localid;
+                }else{
+                    unset($data['localization']);
+                }
+            }
             //添加节目
             $res = $Show->add($data);
             if(!$res){
@@ -101,6 +109,9 @@ class ShowController extends BaseController {
                 $this->ajaxReturn(array('error' => false, 'data' => $res));
             }
         } else {
+            //获取所有节目定位信息
+            $localizationList = D('localization')->select();
+            $this->localizationList = $localizationList;
             $this->display();
         }
     }
@@ -118,8 +129,16 @@ class ShowController extends BaseController {
                 $this->ajaxReturn(array('error' => true, 'data' => 'id不能为空'));
             }
             $data=$Show->create();
-
             $data['uptime']=time();
+            //节目定位转化
+            if(!empty($data['localization'])){
+                $localid = D('localization')->where(array('name', $data['localization']))->field('id');
+                if($localid){
+                    $data['localization'] = $localid;
+                }else{
+                    unset($data['localization']);
+                }
+            }
 
             //修改节目
             $res = $Show->save($data);
@@ -139,8 +158,11 @@ class ShowController extends BaseController {
             $show['directors'] = array_column($show['directors'], 'name');
             $show['distribution_platforms'] = array_column($show['distribution_platforms'], 'name');
             $show['tv_platforms'] = array_column($show['tv_platforms'], 'name');
-
             $this->show = $show;
+            //获取所有节目定位信息
+            $localizationList = D('localization')->select();
+            $this->localizationList = $localizationList;
+
             $this->display();
         }
     }
@@ -185,7 +207,7 @@ class ShowController extends BaseController {
         //参数检查
         if (!$filter) {
             $this->ajaxReturn(array('error' => true, 'data' => 'filter不能为空'));
-        } elseif (!in_array($filter, array('cast', 'director', 'dplatform', 'tplatform', 'company'))) {
+        } elseif (!in_array($filter, array('cast', 'director', 'dplatform', 'tplatform', 'company', 'localization'))) {
             $this->ajaxReturn(array('error' => true, 'data' => 'filter格式错误'));
         }
 

@@ -10,6 +10,14 @@ namespace Home\Model;
 use Think\Model\RelationModel;
 class ShowModel extends RelationModel{
     public $_link=array(
+        'localization'=>array(
+            'mapping_type'=>self::BELONGS_TO,
+            'class_name'=>'localization',
+            'mapping_name'=>'localization',
+            'foreign_key'=>'localization',
+            'mapping_fields'=>'name',
+            'as_fields'=>'name:localization',
+        ),
         'cast'=>array(
             'mapping_type'=>self::MANY_TO_MANY,
             'class_name'=>'cast',

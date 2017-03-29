@@ -22,8 +22,8 @@
 	<![endif]-->
 	<script src="__PUBLIC__/js/ajaxfileupload.js"></script>
 	<script>
-		function setText(text) {
-			$('#showName').val(text);
+		function setInputText(name, text) {
+			$('input[name="'+name+'"]').val(text);
 		}
 		function editHandle(event) {
 			var type = event.data.type;
@@ -285,6 +285,16 @@
 			background: transparent;
 		}
 
+		.content select {
+			width: 100%;
+			outline: none;
+			background: transparent;
+		}
+
+		.content select option {
+			width: 100%;
+		}
+
 		.pre-video img {
 			width: 200px;
 			height: 124px;
@@ -479,7 +489,7 @@
 	<!-- PastEvents -->
 	<div class="show_thumb">
 		<div class="loading" style="display: none;">加载中...</div>
-		<img src="{$show.thumb|default='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488633816726&di=769192ec8756041ba0a0ab5a12d8dd8c&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fe850352ac65c10381d59f42cb6119313b07e893c.jpg'}">
+		<img src="{$show.thumb|default='https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1490804837&di=3e7747e6f7cee2e66fea4c8ddb1c061a&src=http://www.cddatu.com/uc/template/lightsail_mwt1/extend/img/noimg.jpg'}">
 	</div>
 	<div class="container" style="padding-left: 16px; padding-right: 16px;">
 		<!-- Content -->
@@ -515,6 +525,16 @@
 									src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505449&di=c8965141a69a96c198c1e2fd893a9dd0&imgtype=0&src=http%3A%2F%2Fwww.binzz.com%2Fuploads%2Fimage%2F20170214%2F1487089115101391.jpg">
 							</div>
 						</div>
+					</div>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>节目定位：</span></div>
+					<div class="content">
+						<select name="localization">
+							<foreach name="localizationList" item="l">
+								<option value="{$l.id}" <if condition="$l['name'] eq $show['localization']">selected="selected"</if> >{$l.name}</option>
+							</foreach>
+						</select>
 					</div>
 				</div>
 				<div class="grid_box">
