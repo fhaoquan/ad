@@ -202,7 +202,7 @@ class ShowController extends BaseController {
         //接收参数
         $filter = I('filter');
         $page = I('page') ? I('page') : 1;
-        $perpage = I('perpage') ? I('perpage') : 2;
+        $perpage = I('perpage') ? I('perpage') : 10;
 
         //参数检查
         if (!$filter) {
@@ -213,7 +213,11 @@ class ShowController extends BaseController {
 
         $db = D($filter);
         //分页查询筛选条件信息列表
-        $list = $db->limit($perpage)->page($page)->select();
+        if (I('page') != '' || I('perpage') != '') {
+            $list = $db->limit($perpage)->page($page)->select();    //如果传了分页参数则分页查询
+        } else {
+            $list = $db->select();  //默认查询全部
+        }
         //返回数据
         $this->ajaxReturn(array('error' => false, 'data' => $list));
     }
