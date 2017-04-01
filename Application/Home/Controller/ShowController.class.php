@@ -93,19 +93,22 @@ class ShowController extends BaseController {
             $data['ctime']=time();
             $data['uptime']=time();
             //节目定位转化
-            if(!empty($data['localization'])){
+            if (!empty($data['localization'])) {
                 $localid = D('localization')->where(array('name', $data['localization']))->field('id');
-                if($localid){
+                if ($localid) {
                     $data['localization'] = $localid;
-                }else{
-                    unset($data['localization']);
+                } else {
+                    //节目定位不存在
+                    if (!D('localization')->where(array('id', $data['localization']))->count()) {
+                        $this->ajaxReturn(array('error' => true, 'data' => '节目定位不存在'));
+                    }
                 }
             }
             //添加节目
             $res = $Show->add($data);
-            if(!$res){
+            if (!$res) {
                 $this->ajaxReturn(array('error' => true, 'data' => '添加失败'));
-            }else{
+            } else {
                 $this->ajaxReturn(array('error' => false, 'data' => $res));
             }
         } else {
