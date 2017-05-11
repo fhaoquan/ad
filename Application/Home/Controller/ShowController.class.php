@@ -94,7 +94,7 @@ class ShowController extends BaseController {
             $data['uptime']=time();
             //节目定位转化
             if (!empty($data['localization'])) {
-                $localid = D('localization')->where(array('name', $data['localization']))->field('id');
+                $localid = D('localization')->where(array('name', $data['localization']))->getField('id');
                 if ($localid) {
                     $data['localization'] = $localid;
                 } else {
@@ -176,18 +176,19 @@ class ShowController extends BaseController {
     public function deleteShow() {
         $Show = D('show');
         //接收参数
-        $id = I('id');
+        $id = I('id');  //id如果是数组则批量删除、如果是数字则删除一个
         if (IS_POST) {
             //参数检查
             if (!$id) {
                 $this->ajaxReturn(array('error' => true, 'data' => 'id不能为空'));
             }
-            $count = $Show->count($id);
+            $where = array();
+            is_array($id) ? $where['id']=array('in', $id) : $where['id']=$id;
+            $count = $Show->where($where)->count();
             if(!$count){
                 $this->ajaxReturn(array('error' => true, 'data' => '节目不存在'));
             }
-
-            $res = $Show->where(array('id'=>$id))->delete();
+            $res = $Show->where($where)->delete();
             if($res){
                 $this->ajaxReturn(array('error' => false, 'data' => '删除成功'));
             }else{

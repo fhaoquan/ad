@@ -1,6 +1,6 @@
 #loading{ background-color:#000; opacity:0.8; height:100%; width:100%; z-index:999; margin-top:0px; top:0px; }
 #loading-center{ width:100%; height:100%; position:relative; }
-#loading-center-absolute{ position:absolute; left:50%; top:50%; height:10px; width:70px; margin-top:-10px; margin-left:-70px; -webkit-animation:loading-center-absolute 1s infinite; animation:loading-center-absolute 1s infinite; }
+#loading-center-absolute{ position:absolute; left:50%; top:50%; height:10px; width:70px; margin-top:-5px; margin-left:-35px; -webkit-animation:loading-center-absolute 1s infinite; animation:loading-center-absolute 1s infinite; }
 .object{ width:10px; height:10px; opacity:1; background-color:#29A1F7; float:left; -moz-border-radius:50% 50% 50% 50%; -webkit-border-radius:50% 50% 50% 50%; border-radius:50% 50% 50% 50%; margin-right:10px; margin-bottom:10px; }
 .object:last-child{ margin-right:0px; }
 #object_one{ -webkit-animation:object_one 1s infinite; animation:object_one 1s infinite; }

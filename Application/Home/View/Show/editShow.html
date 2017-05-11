@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<title>修改节目</title>
@@ -21,6 +21,7 @@
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	<script src="__PUBLIC__/js/ajaxfileupload.js"></script>
+	<!--<script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>-->
 	<script>
 		function setInputText(name, text) {
 			$('input[name="'+name+'"]').val(text);
@@ -223,32 +224,13 @@
 
 		});
 	</script>
+	<script src="__PUBLIC__/js/self-adaption.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/dist/css/swiper.min.css">
 	<script src="__PUBLIC__/dist/js/swiper.min.js"></script>
 </head>
 <body>
 	<include file="Public/head"/>
-
-	<style>
-		html, body{ margin:0px; height:100%; }
-		input{ outline:none; }
-		.swiper-slide{ width:200px; }
-		.grid_box{ width:100%; height:100%; padding-top:16px; padding-bottom:16px; border-bottom:solid 1px rgba(0, 0, 0, 0.12); }
-		.title{ width:100%; height:100%; font-family:PingFangSC-Regular; color:#2F3336; }
-		.content{ width:100%; height:100%; margin-top:8px; font-family:PingFangSC-Light; color:#7F858A; }
-		.title, .content{ opacity:0.87; font-size:16px; letter-spacing:0; }
-		.content input{ border:none; width:100%; }
-		.content input[type="date"]{ background:transparent; }
-		.content select{ width:100%; outline:none; background: transparent;}
-		.content select option{ width:100%; }
-		.pre-video img{ width:200px; height:124px; float:left; }
-		.show_thumb{ position:relative; text-align:center; }
-		.show_thumb img{ width:100%; height:100%; max-height:250px; }
-		.loading{ width:100%; height:100%; max-height:250px; position:absolute; z-index:999; }
-		.show_name{ width:100%; height:100%; opacity:0.87; font-family:PingFangSC-Medium; font-size:24px; color:#2F3336; letter-spacing:0; }
-		.summary input{ text-overflow:ellipsis; }
-		.read_more{ color:#29A1F7; }
-	</style>
+	<link rel="stylesheet" href="__PUBLIC__/css/mobile.css"/>
 	<link rel="stylesheet" href="__PUBLIC__/css/loading.css">
 	<!-- PastEvents -->
 	<div class="show_thumb">
@@ -264,7 +246,7 @@
 		</div>
 		<img src="{$show.thumb|default='https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1490804837&di=3e7747e6f7cee2e66fea4c8ddb1c061a&src=http://www.cddatu.com/uc/template/lightsail_mwt1/extend/img/noimg.jpg'}">
 	</div>
-	<div class="container" style="padding-left: 16px; padding-right: 16px;">
+	<!--<div class="container" style="padding-left: 16px; padding-right: 16px;">-->
 		<!-- Content -->
 		<div class="show_box">
 			<form id="edit_form" action="{:U('Show/editShow')}" method="post" autocomplete="off">
@@ -285,22 +267,6 @@
 					<div class="title"><span>简介：</span></div>
 					<div class="content summary"><input name="summary" type="text" readonly="readonly"
 														value="{$show.summary}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>预告片／剧照</span></div>
-					<div class="content pre-video swiper-container">
-						<div class="swiper-wrapper">
-							<div class="swiper-slide"><img
-									src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505452&di=2e895f99ade0de678e5b37ae812097e4&imgtype=0&src=http%3A%2F%2Fimage14.m1905.cn%2Fuploadfile%2F2016%2F0610%2F20160610094214956467_watermark.jpg">
-							</div>
-							<div class="swiper-slide"><img
-									src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505452&di=c136723ec86d12095fa55a7d53f562b4&imgtype=0&src=http%3A%2F%2Fh7.86.cc%2Fwalls%2F20160803%2F1440x900_f8c44b5e1ee4771.jpg">
-							</div>
-							<div class="swiper-slide"><img
-									src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505449&di=c8965141a69a96c198c1e2fd893a9dd0&imgtype=0&src=http%3A%2F%2Fwww.binzz.com%2Fuploads%2Fimage%2F20170214%2F1487089115101391.jpg">
-							</div>
-						</div>
-					</div>
 				</div>
 				<div class="grid_box">
 					<div class="title"><span>节目定位：</span></div>
@@ -366,10 +332,10 @@
 					<div class="content"><input class="date" name="end_date" type="date" value="{$show.end_date}"/>
 					</div>
 				</div>
-				<input type="submit" onsubmit="editPost();return false;">
+				<!--<input type="submit" onsubmit="editPost();return false;">-->
 			</form>
 		</div>
-	</div>
+	<!--</div>-->
 	<hr>
 	<include file="Public/foot"/>
 	<script type="text/javascript">

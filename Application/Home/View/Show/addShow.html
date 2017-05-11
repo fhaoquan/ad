@@ -20,6 +20,7 @@
 	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<link src="__PUBLIC__/css/mobile.css" rel="stylesheet"/>
 	<script src="__PUBLIC__/js/ajaxfileupload.js"></script>
 	<script>
 		function setInputText(name, text) {
@@ -222,32 +223,13 @@
 
 		});
 	</script>
+	<script src="__PUBLIC__/js/self-adaption.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/dist/css/swiper.min.css">
 	<script src="__PUBLIC__/dist/js/swiper.min.js"></script>
 </head>
 <body>
 	<include file="Public/head"/>
-
-	<style>
-		html, body{ margin:0px; height:100%; }
-		input{ outline:none; }
-		.swiper-slide{ width:200px; }
-		.grid_box{ width:100%; height:100%; padding-top:16px; padding-bottom:16px; border-bottom:solid 1px rgba(0, 0, 0, 0.12); }
-		.title{ width:100%; height:100%; font-family:PingFangSC-Regular; color:#2F3336; }
-		.content{ width:100%; height:100%; margin-top:8px; font-family:PingFangSC-Light; color:#7F858A; }
-		.title, .content{ opacity:0.87; font-size:16px; letter-spacing:0; }
-		.content input{ border:none; width:100%; }
-		.content input[type="date"]{ background:transparent; }
-		.content select{ width:100%; outline:none; }
-		.content select option{ width:100%; }
-		.pre-video img{ width:200px; height:124px; float:left; }
-		.show_thumb{ position:relative; text-align:center; }
-		.show_thumb img{ width:100%; height:100%; max-height:250px; }
-		.loading{ width:100%; height:100%; max-height:250px; position:absolute; z-index:999; }
-		.show_name{ width:100%; height:100%; opacity:0.87; font-family:PingFangSC-Medium; font-size:24px; color:#2F3336; letter-spacing:0; }
-		.summary input{ text-overflow:ellipsis; }
-		.read_more{ color:#29A1F7; }
-	</style>
+	<link rel="stylesheet" href="__PUBLIC__/css/mobile.css"/>
 	<link rel="stylesheet" href="__PUBLIC__/css/loading.css">
 	<!-- PastEvents -->
 	<div class="show_thumb">
@@ -360,7 +342,7 @@
 					<div class="content"><input class="date" name="end_date" type="date"/>
 					</div>
 				</div>
-
+				<input type="submit">
 			</form>
 		</div>
 	</div>
