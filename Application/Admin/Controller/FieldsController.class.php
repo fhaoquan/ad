@@ -50,10 +50,10 @@ use Admin\Controller\BaseController;
                 if(!I("title")) $this->error('名称不能为空！');
                 if(!I("name")) $this->error('标识不能为空！');
 
-                if (I('ftype') == 5) {
-                    $count = M('fields')->where(array('model' => $model, 'ftype' => I('ftype')))->count();
-                    if ($count != 0) $this->error('该类型只能有一个!');
-                }
+//                if (I('ftype') == 5) {
+//                    $count = M('fields')->where(array('model' => $model, 'ftype' => I('ftype')))->count();
+//                    if ($count != 0) $this->error('该类型只能有一个!');
+//                }
 
                 $count=M($table)->where(array('name'=>I('name'), 'model'=>$model))->count();
                 if($count>0)
@@ -79,6 +79,9 @@ use Admin\Controller\BaseController;
                         break;
                     case '4':
                         $res=$db1->execute('alter table `'.C('DB_PREFIX').$model.'` add `'.$data['name'].'` varchar(225);');
+                        break;
+                    case '5':
+                        $res=$db1->execute('alter table `'.C('DB_PREFIX').$model.'` add `'.$data['name'].'` text;');
                         break;
                     case '6':
                         $res=$db1->execute('alter table `'.C('DB_PREFIX').$model.'` add `'.$data['name'].'` varchar(225);');
@@ -141,6 +144,7 @@ use Admin\Controller\BaseController;
                         $db1->execute('alter table `'.C('DB_PREFIX').$model.'` change  `'.I('name').'` `'.I('name').'` varchar(225);');
                         break;
                     case '5':
+                        $db1->execute('alter table `'.C('DB_PREFIX').$model.'` change  `'.I('name').'` `'.I('name').'` text;');
                         break;
                     case '6':
                         $db1->execute('alter table `'.C('DB_PREFIX').$model.'` change  `'.I('name').'` `'.I('name').'` varchar(225);');

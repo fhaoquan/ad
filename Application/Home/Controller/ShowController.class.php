@@ -68,6 +68,12 @@ class ShowController extends BaseController {
         $show['directors'] = array_column($show['directors'], 'name');
         $show['distribution_platforms'] = array_column($show['distribution_platforms'], 'name');
         $show['tv_platforms'] = array_column($show['tv_platforms'], 'name');
+        if(!empty($show['photo'])){
+            $show['photos']= explode('`',$show['photo']);array_pop($show['photos']);
+        }
+        if(!empty($show['preveiw'])){
+            $show['previews']= explode('`',$show['preview']);array_pop($show['previews']);
+        }
 
         if (IS_POST) {
             //返回数据
@@ -115,6 +121,9 @@ class ShowController extends BaseController {
             //获取所有节目定位信息
             $localizationList = D('localization')->select();
             $this->localizationList = $localizationList;
+            //获取所有分类信息
+            $typeList= D('type')->field('id,title as name,thumb as icon')->where(array('model'=>'show'))->select();
+            $this->typeList= $typeList;
             $this->display();
         }
     }
@@ -161,11 +170,19 @@ class ShowController extends BaseController {
             $show['directors'] = array_column($show['directors'], 'name');
             $show['distribution_platforms'] = array_column($show['distribution_platforms'], 'name');
             $show['tv_platforms'] = array_column($show['tv_platforms'], 'name');
+            if(!empty($show['photo'])){
+                $show['photos']= explode('`',$show['photo']);array_pop($show['photos']);
+            }
+            if(!empty($show['preveiw'])){
+                $show['previews']= explode('`',$show['preview']);array_pop($show['previews']);
+            }
             $this->show = $show;
             //获取所有节目定位信息
             $localizationList = D('localization')->select();
             $this->localizationList = $localizationList;
-
+            //获取所有分类信息
+            $typeList= D('type')->field('id,title as name,thumb as icon')->where(array('model'=>'show'))->select();
+            $this->typeList= $typeList;
             $this->display();
         }
     }
@@ -211,7 +228,7 @@ class ShowController extends BaseController {
         //参数检查
         if (!$filter) {
             $this->ajaxReturn(array('error' => true, 'data' => 'filter不能为空'));
-        } elseif (!in_array($filter, array('cast', 'director', 'dplatform', 'tplatform', 'company', 'localization'))) {
+        } elseif (!in_array($filter, array('cast', 'director', 'dplatform', 'tplatform', 'company', 'localization', 'typeid'))) {
             $this->ajaxReturn(array('error' => true, 'data' => 'filter格式错误'));
         }
 
@@ -221,6 +238,24 @@ class ShowController extends BaseController {
             $list = $db->limit($perpage)->page($page)->select();    //如果传了分页参数则分页查询
         } else {
             $list = $db->select();  //默认查询全部
+        }
+        //返回数据
+        $this->ajaxReturn(array('error' => false, 'data' => $list));
+    }
+
+    public function getTypes(){
+        //接收参数
+        $page = I('page') ? I('page') : 1;
+        $perpage = I('perpage') ? I('perpage') : 20;
+
+        //参数检查
+
+        $db = D('type');
+        //分页查询筛选条件信息列表
+        if (I('page') != '' || I('perpage') != '') {
+            $list = $db->limit($perpage)->page($page)->select();    //如果传了分页参数则分页查询
+        } else {
+            $list = $db->field('id,title as name,thumb as icon')->where(array('model'=>'show'))->select();  //默认查询全部
         }
         //返回数据
         $this->ajaxReturn(array('error' => false, 'data' => $list));

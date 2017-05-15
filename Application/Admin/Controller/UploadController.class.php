@@ -9,7 +9,7 @@ class UploadController extends BaseController{
     {
         $setting=C('UPLOAD_SITEIMG_QINIU');
         $Upload = new \Think\Upload($setting);// 实例化七牛上传类
-        $Upload->allowExts = array('jpg', 'jpeg', 'gif', 'png', 'bmp');// 设置附件上传类型
+        $Upload->allowExts = array('jpg', 'jpeg', 'gif', 'png', 'bmp', 'mp4', '3gp', 'ogg', 'mkv', 'avi');// 设置附件上传类型
         $info = $Upload->upload($_FILES);
 
         if (!$info) {// 上传错误提示错误信息

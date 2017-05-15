@@ -28,7 +28,12 @@ class SearchController extends BaseController {
             $this->addSearch($keyword);
 
             //分页查询节目信息列表
-            $list = $Show->where(array('name' => array('like', '%' . $keyword . '%')))->limit($perpage)->page($page)->select();
+            $where['name'] = array('like', '%' . $keyword . '%');
+            $where['cast'] = array('like', '%' . $keyword . '%');
+            $where['director'] = array('like', '%' . $keyword . '%');
+            $where['tv_platform'] = array('like', '%' . $keyword . '%');
+            $where['_logic'] = 'or';
+            $list = $Show->where($where)->limit($perpage)->page($page)->select();
             //返回数据
             $this->ajaxReturn(array('error' => false, 'data' => $list));
         } else {

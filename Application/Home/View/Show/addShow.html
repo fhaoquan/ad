@@ -145,6 +145,47 @@
 			);
 		}
 
+//		var photoSwiper, previewSwiper;
+		$(window).load(function () {
+			//初始化滑动图片
+			var heights = $('.swiper-slide img').height();
+			$('.swiper-container').css({height: heights}); //获取图片自适应高度赋值
+			photoSwiper = new Swiper('.photo', {
+				direction: 'horizontal',
+				freeMode: true,
+				slidesPerView: 'auto',
+				spaceBetween: 8,
+			});
+			previewSwiper = new Swiper('.preview', {
+				direction: 'horizontal',
+				freeMode: true,
+				slidesPerView: 'auto',
+				spaceBetween: 8,
+			});
+			//加载结束
+			$("#loading").fadeOut(300);
+			//
+			$('.grid_box').click(function () {
+//				$(this).find('input[type="text"]').click();
+//				editPost();
+//				alert(a);
+			});
+			$('.content input[name="summary"]').click({type: 'editSummary'}, editHandle);
+			$('.show_thumb').click(function () {
+				$('#thumb_file').click();
+			});
+			$('.preview .add_file').click(function () {
+				$('#preview_file').click();
+			});
+			$('.photo .add_file').click(function () {
+				$('#photo_file').click();
+			});
+//			$('#thumb').on('change', showThumb);
+
+//			$('.content input[name="summary"]').on('click', {type: 'editSummary', summary: $(this).val()}, editHandle);
+//			$('.content .date').on('click', {type: 'editDate'}, editHandle);
+
+		});
 		function showThumb() {
 			//上传图片
 //			var files = this.files[0];
@@ -192,36 +233,66 @@
 //				$('.show_thumb img').attr('src', thumb);
 //			}
 		}
-
-		$(window).load(function () {
-			//初始化滑动图片
-			var heights = $('.swiper-slide img').height();
-			$('.swiper-container').css({height: heights}); //获取图片自适应高度赋值
-			var swiper = new Swiper('.swiper-container', {
-				direction: 'horizontal',
-				freeMode: true,
-				slidesPerView: 'auto',
-				spaceBetween: 8,
-
-			});
-			//加载结束
-			$("#loading").fadeOut(300);
-			//
-			$('.grid_box').click(function () {
-//				$(this).find('input[type="text"]').click();
-//				editPost();
-//				alert(a);
-			});
-			$('.content input[name="summary"]').click({type: 'editSummary'}, editHandle);
-			$('.show_thumb').click(function () {
-				$('#thumb_file').click();
-			});
-//			$('#thumb').on('change', showThumb);
-
-//			$('.content input[name="summary"]').on('click', {type: 'editSummary', summary: $(this).val()}, editHandle);
-//			$('.content .date').on('click', {type: 'editDate'}, editHandle);
-
-		});
+		function showPhoto() {
+			//上传图片
+			$.ajaxFileUpload({
+						url: "{:U('Upload/index')}",
+						secureuri: false,
+						fileElementId: 'photo_file',
+						dataType: 'json',
+						success: function (data, status)  //服务器成功响应处理函数
+						{
+							if (typeof (data.error) != 'undefined') {
+								if (!data.error) {
+									//图片链接
+									var img = data.data;
+									if (img) {
+										photoSwiper.appendSlide('<div class="swiper-slide"><img src="'+img+'"></div>');
+										$('#photo').val($('#photo').val()+img+'`');
+										return true;
+									}
+								} else {
+									alert(data.data);
+								}
+							}
+						},
+						error: function (data, status, e)//服务器响应失败处理函数
+						{
+							alert(e);
+						}
+					}
+			);
+		}
+		function showPreview() {
+			//上传视频
+			$.ajaxFileUpload({
+						url: "{:U('Upload/index')}",
+						secureuri: false,
+						fileElementId: 'preview_file',
+						dataType: 'json',
+						success: function (data, status)  //服务器成功响应处理函数
+						{
+							if (typeof (data.error) != 'undefined') {
+								if (!data.error) {
+									//图片链接
+									var video = data.data;
+									if (video) {
+										previewSwiper.appendSlide('<div class="swiper-slide"><video src="'+video+'"></video></div>');
+										$('#preview').val($('#preview').val()+video+'`');
+										return true;
+									}
+								} else {
+									alert(data.data);
+								}
+							}
+						},
+						error: function (data, status, e)//服务器响应失败处理函数
+						{
+							alert(e);
+						}
+					}
+			);
+		}
 	</script>
 	<script src="__PUBLIC__/js/self-adaption.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/dist/css/swiper.min.css">
@@ -254,6 +325,16 @@
 					<input id="thumb" name="thumb" type="hidden" value="{#show.thumb}">
 				</div>
 				<div class="grid_box">
+					<div class="title"><span>分类：</span></div>
+					<div class="content">
+						<select name="typeid">
+							<foreach name="typeList" item="t">
+								<option value="{$t.id}">{$t.name}</option>
+							</foreach>
+						</select>
+					</div>
+				</div>
+				<div class="grid_box">
 					<div class="title"><span>节目名称：</span></div>
 					<div class="content"><input name="name" type="text"></div>
 				</div>
@@ -266,30 +347,28 @@
 					<div class="content summary"><input name="summary" type="text" readonly="readonly"/></div>
 				</div>
 				<div class="grid_box">
-					<div class="title"><span>预告片／剧照</span></div>
-					<div class="content pre-video swiper-container">
+					<div class="title"><span>剧照</span></div>
+					<div class="content photo swiper-container">
 						<div class="swiper-wrapper">
-							<div class="swiper-slide"><img
-									src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505452&di=2e895f99ade0de678e5b37ae812097e4&imgtype=0&src=http%3A%2F%2Fimage14.m1905.cn%2Fuploadfile%2F2016%2F0610%2F20160610094214956467_watermark.jpg">
-							</div>
-							<div class="swiper-slide"><img
-									src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505452&di=c136723ec86d12095fa55a7d53f562b4&imgtype=0&src=http%3A%2F%2Fh7.86.cc%2Fwalls%2F20160803%2F1440x900_f8c44b5e1ee4771.jpg">
-							</div>
-							<div class="swiper-slide"><img
-									src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488700505449&di=c8965141a69a96c198c1e2fd893a9dd0&imgtype=0&src=http%3A%2F%2Fwww.binzz.com%2Fuploads%2Fimage%2F20170214%2F1487089115101391.jpg">
-							</div>
+							<div class="swiper-slide"><img class="add_file" src="__PUBLIC__/images/home.jpg"></div>
 						</div>
 					</div>
+					<input id="photo_file" name="photo_file" type="file" accept="image/*" onchange="showPhoto();" style="display:none;">
+					<input name="photo" type="hidden"/>
+				</div>
+				<div class="grid_box">
+					<div class="title"><span>预告片</span></div>
+					<div class="content preview swiper-container">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide"><img class="add_file" src="__PUBLIC__/images/home.jpg"></div>
+						</div>
+					</div>
+					<input id="preview_file" name="preview_file" type="file" accept="video/*" onchange="showPreview();" style="display:none;">
+					<input name="preview" type="hidden"/>
 				</div>
 				<div class="grid_box">
 					<div class="title"><span>节目定位：</span></div>
-					<div class="content">
-						<select name="localization">
-							<foreach name="localizationList" item="l">
-								<option value="{$l.id}" <if condition="$l['name'] eq $show['localization']">selected="selected"</if> >{$l.name}</option>
-							</foreach>
-						</select>
-					</div>
+					<div class="content"><input name="localization" type="text" value="{$show.localization}"/></div>
 				</div>
 				<div class="grid_box">
 					<div class="title"><span>类型：</span></div>
@@ -342,11 +421,9 @@
 					<div class="content"><input class="date" name="end_date" type="date"/>
 					</div>
 				</div>
-				<input type="submit">
 			</form>
 		</div>
 	</div>
-	<hr>
 	<include file="Public/foot"/>
 	<script type="text/javascript">
 
