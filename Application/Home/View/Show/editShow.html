@@ -22,267 +22,7 @@
 	<![endif]-->
 	<script src="__PUBLIC__/js/ajaxfileupload.js"></script>
 	<!--<script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>-->
-	<script>
-		function setInputText(name, text) {
-			$('input[name="'+name+'"]').val(text);
-		}
-		function editHandle(event) {
-			var type = event.data.type;
-			switch (type) {
-				case 'editSummary': {
-					var summary = $(this).val();
-					if ((summary != 'undefined') && (summary != '')) {
-						editObj.editSummary(summary);
-					} else {
-						editObj.editSummary(null);
-					}
-				}
-					break;
-				case 'editName': {
-					editObj.editName();
-				}
-					break;
-				case 'editDate': {
-					var date = $(this).val();
-					var newDate;
-					if ((date != 'undefined') && (date != '')) {
-						newDate = editObj.editDate(date);
-					} else {
-						newDate = editObj.editDate(null);
-					}
-					alert(newDate);
-					editObj.toast(newDate);
-					$(this).val(newDate);
-				}
-					break;
-				default:
-					break;
-			}
-		}
-		function editPost() {
-			var form = $('#edit_form');
-			var url = form.attr("action");
-			var data = form.serializeArray();
-			if (!checkForm(data)) {
-				alert('参数有误');
-				editObj.toast('参数有误');
-				return;
-			}
-			$.post(url, data, function (s) {
-				//回调
-				if (s.error) {
-					alert(s.data);
-					editObj.toast(s.data);
-				} else {
-					//保存成功
-					alert(s.data);
-					editObj.save();
-				}
-			});
-		}
-		function checkForm(data) {
-			var json = {};
-			$.each(data, function(i, field){
-				if(field.value != ''){
-					json[field.name] = field.value;
-				}
-			});
-
-			if(typeof (json['name']) == 'undefined'){
-				alert('名称不能为空');
-				return false;
-			}
-			if (typeof (json['periods']) != 'undefined' && isNaN(json['periods'])) {
-				alert('请填写数字');
-				return false;
-			}
-			return true;
-		}
-		function getObjectURL(file) {
-			var url = null;
-			if (window.createObjectURL != undefined) { // basic
-				url = window.createObjectURL(file);
-			} else if (window.URL != undefined) { // mozilla(firefox)
-				url = window.URL.createObjectURL(file);
-			} else if (window.webkitURL != undefined) { // webkit or chrome
-				url = window.webkitURL.createObjectURL(file);
-			}
-			return url;
-		}
-		function uploadImg(img){
-			//上传图片
-			$('.show_thumb .loading').show();
-			//上传图片
-			$.ajaxFileUpload(
-					{
-						url: "{:U('Upload/index')}",
-						secureuri: false,
-						fileElementId: 'thumb',
-						dataType: 'json',
-						success: function (data, status)  //服务器成功响应处理函数
-						{
-							if (typeof (data.error) != 'undefined') {
-								if (!data.error) {
-									//图片链接
-									var img = data.data;
-									if (img) {
-										$('.show_thumb img').attr('src', img);
-									}
-								} else {
-									alert(data.data);
-								}
-							}
-							//结束加载动画
-							$('.show_thumb .loading').hide();
-						},
-						error: function (data, status, e)//服务器响应失败处理函数
-						{
-							alert(e);
-							//结束加载动画
-							$('.show_thumb .loading').hide();
-						}
-					}
-			);
-		}
-
-		$(window).load(function () {
-			//初始化滑动图片
-			var heights = $('.swiper-slide img').height();
-			$('.swiper-container').css({height: heights}); //获取图片自适应高度赋值
-			var swiper = new Swiper('.swiper-container', {
-				direction: 'horizontal',
-				freeMode: true,
-				slidesPerView: 'auto',
-				spaceBetween: 8,
-
-			});
-			//加载结束
-			$("#loading").fadeOut(300);
-			//
-			$('.grid_box').click(function () {
-//				$(this).find('input[type="text"]').click();
-//				editPost();
-//				alert(a);
-			});
-			$('.content input[name="summary"]').click({type: 'editSummary'}, editHandle);
-			$('.show_thumb').click(function () {
-				$('#thumb_file').click();
-			});
-//			$('#thumb').on('change', showThumb);
-
-//			$('.content input[name="summary"]').on('click', {type: 'editSummary', summary: $(this).val()}, editHandle);
-//			$('.content .date').on('click', {type: 'editDate'}, editHandle);
-
-		});
-		function showThumb() {
-			//上传图片
-//			var files = this.files[0];
-//			var thumb = getObjectURL(this.files[0]);
-			//设置加载动画
-			$('.show_thumb .loading').show();
-			//上传图片
-			$.ajaxFileUpload(
-					{
-						url: "{:U('Upload/index')}",
-						secureuri: false,
-						fileElementId: 'thumb_file',
-						dataType: 'json',
-						success: function (data, status)  //服务器成功响应处理函数
-						{
-							if (typeof (data.error) != 'undefined') {
-								if (!data.error) {
-									//图片链接
-									var img = data.data;
-									if (img) {
-										$('.show_thumb img').load(function () {
-											//图片加载完成结束加载动画
-											$('.show_thumb .loading').hide();
-										})
-										$('.show_thumb img').attr('src', img);
-										$('#thumb').val(img);
-										return true;
-									}
-								} else {
-									alert(data.data);
-								}
-							}
-							//结束加载动画
-							$('.show_thumb .loading').hide();
-						},
-						error: function (data, status, e)//服务器响应失败处理函数
-						{
-							alert(e);
-							//结束加载动画
-							$('.show_thumb .loading').hide();
-						}
-					}
-			);
-//			var thumb = getObjectURL(this.files[0]);
-//			if(thumb){
-//				$('.show_thumb img').attr('src', thumb);
-//			}
-		}
-		function showPhoto() {
-			//上传图片
-			$.ajaxFileUpload({
-						url: "{:U('Upload/index')}",
-						secureuri: false,
-						fileElementId: 'photo_file',
-						dataType: 'json',
-						success: function (data, status)  //服务器成功响应处理函数
-						{
-							if (typeof (data.error) != 'undefined') {
-								if (!data.error) {
-									//图片链接
-									var img = data.data;
-									if (img) {
-										photoSwiper.appendSlide('<div class="swiper-slide"><img src="'+img+'"></div>');
-										$('#photo').val($('#photo').val()+img+'`');
-										return true;
-									}
-								} else {
-									alert(data.data);
-								}
-							}
-						},
-						error: function (data, status, e)//服务器响应失败处理函数
-						{
-							alert(e);
-						}
-					}
-			);
-		}
-		function showPreview() {
-			//上传视频
-			$.ajaxFileUpload({
-						url: "{:U('Upload/index')}",
-						secureuri: false,
-						fileElementId: 'preview_file',
-						dataType: 'json',
-						success: function (data, status)  //服务器成功响应处理函数
-						{
-							if (typeof (data.error) != 'undefined') {
-								if (!data.error) {
-									//图片链接
-									var video = data.data;
-									if (video) {
-										previewSwiper.appendSlide('<div class="swiper-slide"><video controls="controls" src="'+video+'"></div>');
-										$('#preview').val($('#preview').val()+video+'`');
-										return true;
-									}
-								} else {
-									alert(data.data);
-								}
-							}
-						},
-						error: function (data, status, e)//服务器响应失败处理函数
-						{
-							alert(e);
-						}
-					}
-			);
-		}
-	</script>
+	<script src="__PUBLIC__/js/mobile.js"></script>
 	<script src="__PUBLIC__/js/self-adaption.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/dist/css/swiper.min.css">
 	<script src="__PUBLIC__/dist/js/swiper.min.js"></script>
@@ -311,7 +51,7 @@
 			<form id="edit_form" action="{:U('Show/editShow')}" method="post" autocomplete="off">
 				<div><input id="id" name="id" type="hidden" value="{$show.id}"></div>
 				<div>
-					<input id="thumb_file" name="thumb_file" type="file" value="{$show.thumb}" onchange="showThumb();" style="display:none;">
+					<input id="thumb_file" name="thumb_file" type="file" value="{$show.thumb}" onchange="showThumb('{:U(\"Upload/index\")}');" style="display:none;">
 					<input id="thumb" name="thumb" type="hidden" value="{$show.thumb}">
 				</div>
 				<div class="grid_box">
@@ -324,108 +64,95 @@
 						</select>
 					</div>
 				</div>
-				<div class="grid_box">
-					<div class="title"><span>节目名称：</span></div>
-					<div class="content"><input name="name" type="text" value="{$show.name}"></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>导演：</span></div>
-					<div class="content"><input name="director" type="text" value="{$show.director}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>简介：</span></div>
-					<div class="content summary"><input name="summary" type="text" readonly="readonly"
-														value="{$show.summary}"/></div>
-				</div>
-				<notempty name="show.photos">
-					<div class="grid_box">
-						<div class="title"><span>剧照</span></div>
-						<div class="content photo swiper-container">
-							<div class="swiper-wrapper">
-								<div class="swiper-slide"><img class="add_file" src="__PUBLIC__/images/home.jpg"></div>
-								<foreach name="show.photos" item="photo">
-									<div class="swiper-slide"><img src="{$photo}"></div>
-								</foreach>
+
+				<foreach name="fieldList" item="v">
+					<switch name="v.ftype">
+						<case value="1">
+							<div class="grid_box">
+								<div class="title"><span>{$v.title}：</span></div>
+								<div class="content"><input name="{$v.name}" type="text" value="{$show[$v['name']]}"></div>
 							</div>
-						</div>
-						<input id="photo_file" name="photo_file" type="file" accept="image/*" onchange="showThumb();" style="display:none;">
-						<input name="photo" type="hidden" value="{$show.photo}"/>
-					</div>
-				</notempty>
-				<notempty name="show.previews">
-					<div class="grid_box">
-						<div class="title"><span>预告片</span></div>
-						<div class="content preview swiper-container">
-							<div class="swiper-wrapper">
-								<div class="swiper-slide"><img class="add_file" src="__PUBLIC__/images/home.jpg"></div>
-								<foreach name="show.previews" item="preview">
-									<div class="swiper-slide"><video controls="controls" src="{$preview}"></video></div>
-								</foreach>
+						</case>
+						<case value="2">
+							<div class="grid_box">
+								<div class="title"><span>{$v.title}：</span></div>
+								<div class="content"><input name="{$v.name}" type="text" value="{$show[$v['name']]}"></div>
 							</div>
-						</div>
-						<input id="preview_file" name="preview_file" type="file" accept="video/*" onchange="showThumb();" style="display:none;">
-						<input name="preview" type="hidden" value="{$show.preview}"/>
-					</div>
-				</notempty>
-				<div class="grid_box">
-					<div class="title"><span>节目定位：</span></div>
-					<div class="content"><input name="localization" type="text" value="{$show.localization}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>类型：</span></div>
-					<div class="content"><input name="ptype" type="text" value="{$show.ptype}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>预计上线时间：</span></div>
-					<div class="content"><input class="date" name="expected_tv_startdate" type="date"
-												value="{$show.expected_tv_startdate}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>网络播放平台：</span></div>
-					<div class="content"><input name="distribution_platform" type="text"
-												value="{$show.distribution_platform}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>卫视平台：</span></div>
-					<div class="content"><input name="tv_platform" type="text" value="{$show.tv_platform}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>出品公司：</span></div>
-					<div class="content"><input name="company" type="text" value="{$show.company}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>影视期数</span></div>
-					<div class="content"><input name="periods" type="text" value="{$show.periods}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>营销等级</span></div>
-					<div class="content"><input name="marketing_grading" type="text"
-												value="{$show.marketing_grading}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>更新方式</span></div>
-					<div class="content"><input name="update_mode" type="text" value="{$show.update_mode}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>主演阵容：</span></div>
-					<div class="content"><input name="cast" type="text" value="{$show.cast}"/></div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>招商状态：</span></div>
-					<div class="content"><input name="investment_status" type="text" value="{$show.investment_status}"/>
-					</div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>招商开始时间</span></div>
-					<div class="content"><input class="date" name="start_date" type="date" value="{$show.start_date}"/>
-					</div>
-				</div>
-				<div class="grid_box">
-					<div class="title"><span>招商结束时间</span></div>
-					<div class="content"><input class="date" name="end_date" type="date" value="{$show.end_date}"/>
-					</div>
-				</div>
-				<!--<input type="submit" onsubmit="editPost();return false;">-->
+						</case>
+						<case value="3">
+							<div class="grid_box">
+								<div class="title"><span>{$v.title}：</span></div>
+								<div class="content"><input name="{$v.name}" type="text" value="{$show[$v['name']]}"></div>
+							</div>
+						</case>
+						<case value="4">
+							<neq name="v.name" value="thumb">
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content"><input name="{$v.name}" type="file" value="{$show[$v['name']]}"></div>
+								</div>
+							</neq>
+						</case>
+						<case value="5">
+							<if condition="$v.name eq 'preview'">
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content preview swiper-container">
+										<div class="swiper-wrapper">
+											<div class="swiper-slide"><img class="add_file" src="__PUBLIC__/images/upload.png"></div>
+										</div>
+									</div>
+									<input id="preview_file" name="preview_file" type="file" accept="video/*" onchange="showPreview('{:U(\"Upload/index\")}');" style="display:none;">
+									<input name="{$v.name}" type="hidden" value="{$show[$v['name']]}"/>
+								</div>
+								<elseif condition="$v.name eq 'photo'"/>
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content photo swiper-container">
+										<div class="swiper-wrapper">
+											<div class="swiper-slide"><img class="add_file" src="__PUBLIC__/images/upload.png"></div>
+											<foreach name="show.photos" item="photo">
+												<div class="swiper-slide"><img src="{$photo}"></div>
+											</foreach>
+										</div>
+									</div>
+									<input id="photo_file" name="photo_file" type="file" accept="image/*" onchange="showPhoto('{:U(\"Upload/index\")}');" style="display:none;">
+									<input name="{$v.name}" type="hidden" value="{$show[$v['name']]}"/>
+								</div>
+								<else/>
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content"><input name="{$v.name}" type="file" value="{$show[$v['name']]}"></div>
+								</div>
+							</if>
+						</case>
+						<case value="6">
+							<div class="grid_box">
+								<div class="title"><span>{$v.title}：</span></div>
+								<div class="content"><input class="date" name="{$v.name}" type="date" value="{$show[$v['name']]}"></div>
+							</div>
+						</case>
+						<case value="8">
+							<eq name="v.name" value="summary">
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content summary"><input name="{$v.name}" type="text" readonly="readonly" value="{$show[$v['name']]}"/></div>
+								</div>
+								<else/>
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content"><input name="{$v.name}" type="text" value="{$show[$v['name']]}"></div>
+								</div>
+							</eq>
+						</case>
+						<default>
+							<div class="grid_box">
+								<div class="title"><span>{$v.title}：</span></div>
+								<div class="content"><input name="{$v.name}" type="text" value="{$show[$v['name']]}"></div>
+							</div>
+						</default>
+					</switch>
+				</foreach>
 			</form>
 		</div>
 	<!--</div>-->

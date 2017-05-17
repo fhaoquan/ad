@@ -101,26 +101,73 @@
 				</div>
 			</div>
 			<php> } </php>
-			<div class="grid_box">
-				<div class="title"><span>类型：</span></div>
-				<div class="content"><span>{$show.ptype}</span></div>
-			</div>
-			<div class="grid_box">
-				<div class="title"><span>预计上线时间：</span></div>
-				<div class="content"><span>{$show.expected_tv_startdate}</span></div>
-			</div>
-			<div class="grid_box">
-				<div class="title"><span>网络播放平台：</span></div>
-				<div class="content"><span>{$show.distribution_platform}</span></div>
-			</div>
-			<div class="grid_box">
-				<div class="title"><span>卫视平台：</span></div>
-				<div class="content"><span>{$show.tv_platform}</span></div>
-			</div>
-			<div class="grid_box">
-				<div class="title"><span>出品公司：</span></div>
-				<div class="content"><span>{$show.company}</span></div>
-			</div>
+
+			<foreach name="fieldList" item="v">
+				<if condition="!empty($show[$v['name']])">
+					<switch name="v.ftype">
+						<case value="1">
+							<if condition="($v.name neq 'update_mod') and ($v.name neq 'periods') and ($v.name neq 'marketing_grading') and ($v.name neq 'name') and ($v.name neq 'director')">
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content"><span>{$show[$v['name']]}</span></div>
+								</div>
+							</if>
+						</case>
+						<case value="2">
+							<div class="grid_box">
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content"><span>{$show[$v['name']]}</span></div>
+								</div>
+							</div>
+						</case>
+						<case value="3">
+							<if condition="($v.name neq 'date_confirm') and ($v.name neq 'expected_date_confirm') and ($v.name neq 'min_duration') and ($v.name neq 'max_duration')">
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content"><span>{$show[$v['name']]}</span></div>
+								</div>
+							</if>
+						</case>
+						<case value="4">
+							<neq name="v.name" value="thumb">
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content"><img src="{$show[$v['name']]}" /></div>
+								</div>
+							</neq>
+						</case>
+						<case value="5">
+							<if condition="($v.name neq 'photo') and ($v.name neq 'preview')">
+
+							</if>
+						</case>
+						<case value="6">
+							<if condition="($v.name neq 'start_date') and ($v.name neq 'end_date') and ($v.name neq 'expected_tv_startdate') and ($v.name neq 'expected_tv_enddate')">
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content"><span>{$show[$v['name']]}</span></div>
+								</div>
+							</if>
+						</case>
+						<case value="8">
+							<neq name="v.name" value="summary">
+								<div class="grid_box">
+									<div class="title"><span>{$v.title}：</span></div>
+									<div class="content"><span>{$show[$v['name']]}</span></div>
+								</div>
+							</neq>
+						</case>
+						<default>
+							<div class="grid_box">
+								<div class="title"><span>{$v.title}：</span></div>
+								<div class="content"><span>{$show[$v['name']]}</span></div>
+							</div>
+						</default>
+					</switch>
+				</if>
+			</foreach>
+
 			<div class="grid_box">
 				<div class="grid_row_box">
 					<div class="grid_column_box">
@@ -138,16 +185,18 @@
 				</div>
 			</div>
 			<div class="grid_box">
-				<div class="title"><span>主演阵容：</span></div>
-				<div class="content"><span>{$show.cast}</span></div>
+				<div class="title"><span>项目时间</span></div>
+				<div class="content">
+					<span>{$show.start_date|default='-'} 至 {$show.end_date|default='-'}</span>
+					<span>&nbsp;&nbsp;<empty name="date_confirm">待定</empty></span>
+				</div>
 			</div>
 			<div class="grid_box">
-				<div class="title"><span>招商状态：</span></div>
-				<div class="content"><span>{$show.investment_status}</span></div>
-			</div>
-			<div class="grid_box">
-				<div class="title"><span>招商时间</span></div>
-				<div class="content"><span>{$show.start_date|default='-'} 至 {$show.end_date|default='-'}</span></div>
+				<div class="title"><span>预计卫视播出时间</span></div>
+				<div class="content">
+					<span>{$show.expected_tv_startdate|default='-'} 至 {$show.expected_tv_enddate|default='-'}</span>
+					<span>&nbsp;&nbsp;<empty name="expected_tv_confirm">待定</empty></span>
+				</div>
 			</div>
 		</div>
 	<!--</div>-->

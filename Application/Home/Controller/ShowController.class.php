@@ -83,6 +83,10 @@ class ShowController extends BaseController {
                 $this->ajaxReturn(array('error' => true, 'data' => '节目不存在'));
             }
         } else {
+            //获取节目字段信息
+            $fieldList = D('fields')->where(array('model'=>'show'))->order('orderid')->select();
+            $this->fieldList = $fieldList;
+
             $this->show = $show;
             $this->display();
         }
@@ -118,6 +122,9 @@ class ShowController extends BaseController {
                 $this->ajaxReturn(array('error' => false, 'data' => $res));
             }
         } else {
+            //获取节目字段信息
+            $fieldList = D('fields')->where(array('model'=>'show'))->order('orderid')->select();
+            $this->fieldList = $fieldList;
             //获取所有节目定位信息
             $localizationList = D('localization')->select();
             $this->localizationList = $localizationList;
@@ -177,6 +184,9 @@ class ShowController extends BaseController {
                 $show['previews']= explode('`',$show['preview']);array_pop($show['previews']);
             }
             $this->show = $show;
+            //获取节目字段信息
+            $fieldList = D('fields')->where(array('model'=>'show'))->select();
+            $this->fieldList = $fieldList;
             //获取所有节目定位信息
             $localizationList = D('localization')->select();
             $this->localizationList = $localizationList;
@@ -243,6 +253,9 @@ class ShowController extends BaseController {
         $this->ajaxReturn(array('error' => false, 'data' => $list));
     }
 
+    /**
+     * 获取所有类型列表
+     */
     public function getTypes(){
         //接收参数
         $page = I('page') ? I('page') : 1;
