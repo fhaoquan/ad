@@ -103,6 +103,7 @@
 			<php> } </php>
 
 			<foreach name="fieldList" item="v">
+				<php>$fields[$v['name']]=$v['title'];</php>
 				<if condition="!empty($show[$v['name']])">
 					<switch name="v.ftype">
 						<case value="1">
@@ -167,19 +168,18 @@
 					</switch>
 				</if>
 			</foreach>
-
 			<div class="grid_box">
 				<div class="grid_row_box">
 					<div class="grid_column_box">
-						<div class="title"><span>影视期数</span></div>
+						<div class="title"><span>{$fields.periods}</span></div>
 						<div class="content"><span><empty name="show.periods">待定<else/>{$show.periods}集</empty></span></div>
 					</div>
 					<div class="grid_column_box">
-						<div class="title"><span>营销等级</span></div>
+						<div class="title"><span>{$fields.marketing_grading}</span></div>
 						<div class="content"><span><empty name="show.marketing_grading">待定<else/>{$show.marketing_grading}级</empty></span></div>
 					</div>
 					<div class="grid_column_box">
-						<div class="title"><span>更新方式</span></div>
+						<div class="title"><span>{$fields.update_mode}</span></div>
 						<div class="content"><span>{$show.update_mode|default='待定'}</span></div>
 					</div>
 				</div>
