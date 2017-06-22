@@ -32,6 +32,10 @@ class SearchController extends BaseController {
             $where['cast'] = array('like', '%' . $keyword . '%');
             $where['director'] = array('like', '%' . $keyword . '%');
             $where['tv_platform'] = array('like', '%' . $keyword . '%');
+            $where['localization'] = array('like', '%' . $keyword . '%');
+            $where['company'] = array('like', '%' . $keyword . '%');
+            $where['ptype'] = array('like', '%' . $keyword . '%');
+            $where['distribute_platform'] = array('like', '%' . $keyword . '%');
             $where['_logic'] = 'or';
             $list = $Show->where($where)->limit($perpage)->page($page)->select();
             //返回数据

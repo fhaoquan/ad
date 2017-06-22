@@ -35,7 +35,7 @@ class ShowController extends BaseController {
 //            $this->ajaxReturn(array('error'=>true,'data'=>'筛选类型有误'));
 //        }
         //分页查询节目信息列表
-        $list = $Show->where($filter)->relation(true)->limit($perpage)->page($page)->order('recommanded desc, ctime desc')->select();
+        $list = $Show->where($filter)->relation(true)->field('')->limit($perpage)->page($page)->order('recommanded desc, ctime desc')->select();
         foreach ($list as $index => $item) {
             $list[$index]['casts'] = array_column($item['casts'], 'name');
             $list[$index]['directors'] = array_column($item['directors'], 'name');
@@ -266,9 +266,9 @@ class ShowController extends BaseController {
         $db = D('type');
         //分页查询筛选条件信息列表
         if (I('page') != '' || I('perpage') != '') {
-            $list = $db->limit($perpage)->page($page)->select();    //如果传了分页参数则分页查询
+            $list = $db->field('id,title as name,thumb as icon')->where(array('model'=>'show'))->limit($perpage)->page($page)->order('orderid')->select();    //如果传了分页参数则分页查询
         } else {
-            $list = $db->field('id,title as name,thumb as icon')->where(array('model'=>'show'))->select();  //默认查询全部
+            $list = $db->field('id,title as name,thumb as icon')->where(array('model'=>'show'))->order('orderid')->select();  //默认查询全部
         }
         //返回数据
         $this->ajaxReturn(array('error' => false, 'data' => $list));
