@@ -64,10 +64,10 @@ class ShowController extends BaseController {
         }
         //分页查询节目信息列表
         $show = $Show->relation(true)->find($id);
-        $show['casts'] = array_column($show['casts'], 'name');
-        $show['directors'] = array_column($show['directors'], 'name');
-        $show['distribution_platforms'] = array_column($show['distribution_platforms'], 'name');
-        $show['tv_platforms'] = array_column($show['tv_platforms'], 'name');
+//        $show['casts'] = array_column($show['casts'], 'name');var_dump($show);die(1);
+//        $show['directors'] = array_column($show['directors'], 'name');
+//        $show['distribution_platforms'] = array_column($show['distribution_platforms'], 'name');
+//        $show['tv_platforms'] = array_column($show['tv_platforms'], 'name');
         if(!empty($show['photo'])){
             $show['photos']= explode('`',$show['photo']);array_pop($show['photos']);
         }
