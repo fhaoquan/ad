@@ -108,9 +108,9 @@ Released under the MIT License <http://www.opensource.org/licenses/mit-license.p
 					checkExisting   : false,              // The path to a server-side script that checks for existing files on the server
 					debug           : false,              // Turn on swfUpload debugging mode
 					fileObjName     : 'Filedata',         // The name of the file object to use in your server-side script
-					fileSizeLimit   : '2MB',                  // 最大上传大小限制 (Accepts units B KB MB GB if string, 0 for no limit)
+					fileSizeLimit   : 0,                  // 最大上传大小限制 (Accepts units B KB MB GB if string, 0 for no limit)
 					fileTypeDesc    : 'All Files',        // The description for file types in the browse dialog
-					fileTypeExts    : '*.jpg;*.png;*.gif',              //上传文件类型限制(*.png;*.jpg)
+					fileTypeExts    : '*.*',              //上传文件类型限制(*.png;*.jpg)
 					height          : 30,                 // The height of the browse button
 					itemTemplate    : false,              // The template for the file item in the queue
 					method          : 'post',             // The method to use when sending files to the server-side upload script

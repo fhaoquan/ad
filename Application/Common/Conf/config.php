@@ -2,7 +2,7 @@
 return array(
     //七牛上传配置
     'UPLOAD_SITEIMG_QINIU' => array(
-        'maxSize' => 5 * 1024 * 1024,//文件大小
+        'maxSize' => 100 * 1024 * 1024,//文件大小
         'rootPath' => './',
         'saveName' => array('uniqid', ''),
         'driver' => 'Qiniu',
