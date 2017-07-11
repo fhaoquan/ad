@@ -45,17 +45,17 @@ function dump_table($table,$dir,$conf,$is_drop=true)
     $need_close = false;
     if($conf != null){
         //连接数据库
-        $con = mysql_connect($conf['DB_HOST'], $conf['DB_USER'], $conf['DB_PWD']);
+        $con = mysqli_connect($conf['DB_HOST'], $conf['DB_USER'], $conf['DB_PWD']);
         if(!$con){
             return false;
         }
-        mysql_query("set names 'utf8'", $con);
-        mysql_select_db($conf['DB_NAME'],$con);
+        mysqli_query("set names 'utf8'", $con);
+        mysqli_select_db($conf['DB_NAME'],$con);
     }
     try{
-        $a=mysql_query("show create table `{$table}`", $con);//显示创建mysql数据的的语句结构。
-        $row=mysql_fetch_assoc($a);//导出表结构
-        $rs = mysql_query("SELECT * FROM `{$table}`", $con);
+        $a=mysqli_query("show create table `{$table}`", $con);//显示创建mysql数据的的语句结构。
+        $row=mysqli_fetch_assoc($a);//导出表结构
+        $rs = mysqli_query("SELECT * FROM `{$table}`", $con);
 
         $dom = new DOMDocument("1.0","utf-8");   //创建xml对象
         $dom->formatOutput = true;
@@ -78,7 +78,7 @@ function dump_table($table,$dir,$conf,$is_drop=true)
         $tableNode->setAttribute("value",$row['Create Table']);  //设置table节点中value属性的值
         $root->appendChild($tableNode);                //将table节点加入xmls节点，意思就是成为xmls的子节点
 
-        while ($row = mysql_fetch_row($rs)) {           //如上，每有一行数据就创建一个row节点，每个row节点都有一个value属性，
+        while ($row = mysqli_fetch_row($rs)) {           //如上，每有一行数据就创建一个row节点，每个row节点都有一个value属性，
             $insert = $dom->createElement("row");       //他的值就是insert语句，每个row节点都成为xmls的子节点
             $in = $dom->createAttribute("value");
             $insert->appendChild($in);
@@ -86,13 +86,13 @@ function dump_table($table,$dir,$conf,$is_drop=true)
             $root->appendChild($insert);
         }
         $dom->save($dir."/{$table}.xml");       //最后保存xml文件，括号内是保存的路径
-        mysql_free_result($rs);//释放内存
+        mysqli_free_result($rs);//释放内存
     }catch (\Think\Exception $e){
         return false;
     }
     if($con != null){
         //关闭数据库连接
-        mysql_close($con);
+        mysqli_close($con);
     }
     return true;
 }
