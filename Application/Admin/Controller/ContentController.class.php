@@ -4,24 +4,31 @@ use Admin\Controller\BaseController;
 class ContentController extends BaseController {
     public function index(){
         $model=I('model');
-        $typeid=I('typeid');
-        if($typeid){
-            $count= D($model)->where(array('typeid'=>$typeid))->count();
-		}else{
-			$count= D($model)->count();
-		}            
+
+        $where=array();
+        $select_name=I('select_name');
+        $select_val=I('select_val');
+        if(I('select')=='select'){
+            if(I('vague')=='vague'){
+                $where[$select_name]=array('like', '%'.$select_val.'%');
+            }else{
+                $where[$select_name]=$select_val;
+            }
+            $this->select_name=$select_name;
+            $this->select_val=$select_val;
+            $this->vague=I('vague');
+        }
+
+        $count=D($model)->where($where)->count();
         $Page= new \Think\Page($count,15);
         $limit=$Page->firstRow .',' .$Page->listRows;
-        if($typeid){
-            $this->list=D('Content')->table(C('DB_PREFIX').$model)->relation(true)->where(array('typeid'=>$typeid))->order('ctime desc')->limit($limit)->select();
-            $this->typeid=$typeid;
-        }else{
-            $this->list=D('Content')->table(C('DB_PREFIX').$model)->relation(true)->order('ctime desc')->limit($limit)->select();
-        }
+        $this->list=D('Content')->table(C('DB_PREFIX').$model)->relation(true)->where($where)->order('ctime desc')->limit($limit)->select();
+
         $this->page=$Page->show();
         $this->model=D('model')->where(array('model'=>$model))->find();
         $this->fields=D('fields')->where(array('model'=>$model,'ls'=>0))->order('orderid asc')->select();
         $this->types=D('type')->where(array('model'=>$model))->select();
+        $this->select=M('fields')->where(array('model'=>$model))->order('orderid asc')->select();
         $this->display(); 
     }
     public function add(){

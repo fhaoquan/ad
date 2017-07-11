@@ -39,22 +39,25 @@
 
         <div class="top-tool">
             <a href="{:U('Content/add',array('model'=>$model['model']))}" class="button-a">添加{$model.title}</a>
-            <input type="submit" class="button-b" value="保存排序"/>
-
-            <div class="query">
-                <span>按分类查看：</span>
-                <select onchange="gotopage(this.options[this.selectedIndex].value)">
-                    <option value="">请选择分类</option>
-                    <foreach name="types" item="v">
-                        {$typeid}
-                        <option
-                        <if condition="$v['id'] eq $typeid">selected=""</if>
-                        value="{$v.id}">{$v.title}</option>
+            <form action="{:U('Content/index',array('model'=>$model['model']))}" method="post" style="float: left;margin-left:10px;">
+                <a style="float: left;margin-top:0px;height:22px;line-height:22px;">选择字段：</a>
+                <select style="float: left;height:22px;" name="select_name">
+                    <foreach name="select" item="v">
+                        <option value="{$v.name}" <eq name="select_name" value="$v.name">selected="selected"</eq>>{$v.title}</option>
                     </foreach>
                 </select>
+                <if condition="$vague eq 'vague'">
+                    <input type="checkbox" name="vague" value="vague" checked="checked">
+                    <else/>
+                    <input type="checkbox" name="vague" value="vague">
+                </if>
+                模糊查询
+                <input style="float:left;margin-left:5px;height:22px;" name="select_val" value="{$select_val}" />
+                <input type="hidden" name="select" value="select"/>
+                <input type="submit" class="button-b" value="提交查询"/>
+                <input type="hidden" name="model" value="{$model['model']}"/>
+            </form>
 
-            </div>
-            <input type="hidden" name="model" value="{$model['model']}"/>
         </div>
     </div>
 </div>
