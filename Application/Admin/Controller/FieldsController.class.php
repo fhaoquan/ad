@@ -50,6 +50,9 @@ use Admin\Controller\BaseController;
                 if(!I("title")) $this->error('名称不能为空！');
                 if(!I("name")) $this->error('标识不能为空！');
 
+                if($this->isSysField(I('name'))){
+                    $this->error('系统保留字段,请重新定义标识！');
+                }
 //                if (I('ftype') == 5) {
 //                    $count = M('fields')->where(array('model' => $model, 'ftype' => I('ftype')))->count();
 //                    if ($count != 0) $this->error('该类型只能有一个!');
@@ -176,4 +179,15 @@ use Admin\Controller\BaseController;
             }
 
         }
+
+        //是否系统字段
+        private function isSysField($name){
+            $fields = array('id','type','typeid','title','keywords','ctime','uptime','orderid');
+            if(in_array($name, $fields)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
     }
