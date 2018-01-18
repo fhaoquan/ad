@@ -9,26 +9,11 @@
         }
     </script>
     <style type="text/css">
-        .query {
-            float: left;
-            margin: 0px 10px;
-            height: 22px;
-        }
-
-        .query span {
-            float: left;
-            height: 22px;
-            line-height: 22px;
-        }
-
-        .query select {
-            float: left;
-            height: 22px;
-            line-height: 22px;
-            width: 150px;
-            font-family: 微软雅黑;
-            font-size: 12px;
-        }
+        .query {float:left;margin:0px 10px;height:22px;}
+        .query span{float:left;height:22px;line-height:22px;}
+        .query select{float:left;height:22px;line-height:22px;width:150px;font-family:微软雅黑;font-size:12px;}
+        th{text-align:center !important;}
+        td{max-width:100px;white-space: nowrap;overflow:hidden;text-overflow:ellipsis;}
     </style>
 </head>
 <body>
@@ -69,8 +54,8 @@
             <foreach name="fields" item="vs">
                 <th><span>{$vs['title']}</span></th>
             </foreach>
-            <th width="20%">所属分类</th>
-            <th width="15%">操作</th>
+            <th width="10%">所属分类</th>
+            <th width="15%" style="min-width:120px;">操作</th>
         </tr>
         <foreach name="list" item="v">
             <tr>
