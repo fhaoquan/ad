@@ -88,7 +88,7 @@
 			</div>
 			<php>if(!empty($show['photos']) || !empty($show['previews'])){ </php>
 			<div class="grid_box">
-				<div class="title"><span>预告片／剧照</span></div>
+				<div class="title"><span>{$fields.preview}／{$fields.photo}</span></div>
 				<div class="content preview swiper-container">
 					<div class="swiper-wrapper">
 						<foreach name="show.photos" item="photo">
@@ -182,7 +182,7 @@
 			</div>
 			<if condition="(!empty($show['start_date'])) or (!empty($show['end_date'])) or (empty($show['date_confirm']))">
 				<div class="grid_box">
-					<div class="title"><span>项目时间</span></div>
+					<div class="title"><span>{$fields.start_date} / {$fields.end_date}</span></div>
 					<div class="content">
 						<span><if condition="!empty($show['start_date']) or !empty($show['end_date'])">
 							{$show.start_date|default='-'} 至 {$show.end_date|default='-'}
@@ -193,7 +193,7 @@
 			</if>
 			<if condition="(!empty($show['expected_tv_startdate'])) or (!empty($show['expected_tv_enddate'])) or (empty($show['expected_tv_confirm']))">
 				<div class="grid_box">
-					<div class="title"><span>卫视播出时间</span></div>
+					<div class="title"><span>{$fields.expected_tv_startdate} / {$fields.expected_tv_enddate}</span></div>
 					<div class="content">
 						<span><if condition="!empty($show['expected_tv_startdate']) or !empty($show['expected_tv_enddate'])">{$show.expected_tv_startdate|default='-'} 至 {$show.expected_tv_enddate|default='-'}
 						</if></span>
