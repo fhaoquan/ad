@@ -38,6 +38,9 @@ class SearchController extends BaseController {
             $where['distribute_platform'] = array('like', '%' . $keyword . '%');
             $where['_logic'] = 'or';
             $list = $Show->where($where)->limit($perpage)->page($page)->select();
+            foreach ($list as $index => $item) {
+                $list[$index]['investment_status'] = $Show->checkInvestment($list[$index]);
+            }
             //返回数据
             $this->ajaxReturn(array('error' => false, 'data' => $list));
         } else {

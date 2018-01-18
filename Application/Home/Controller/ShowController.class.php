@@ -41,6 +41,7 @@ class ShowController extends BaseController {
             $list[$index]['directors'] = array_column($item['directors'], 'name');
             $list[$index]['distribution_platforms'] = array_column($item['distribution_platforms'], 'name');
             $list[$index]['tv_platforms'] = array_column($item['tv_platforms'], 'name');
+            $list[$index]['investment_status'] = $Show->checkInvestment($list[$index]);
         }
         //返回数据
         $this->ajaxReturn(array('error' => false, 'data' => $list));
@@ -73,6 +74,10 @@ class ShowController extends BaseController {
         }
         if(!empty($show['preveiw'])){
             $show['previews']= explode('`',$show['preview']);array_pop($show['previews']);
+        }
+
+        if(!empty($show['investment_status'])){
+            $show['investment_status'] = $Show->checkInvestment($show);
         }
 
         if (IS_POST) {
@@ -114,6 +119,8 @@ class ShowController extends BaseController {
                     }
                 }
             }
+            //招商状态检查
+            $data['investment_status'] = $Show->checkInvestment($data);
             //添加节目
             $res = $Show->add($data);
             if (!$res) {
@@ -158,6 +165,8 @@ class ShowController extends BaseController {
                     unset($data['localization']);
                 }
             }
+            //招商状态检查
+            $data['investment_status'] = $Show->checkInvestment($data);
 
             //修改节目
             $res = $Show->save($data);
