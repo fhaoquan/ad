@@ -1,7 +1,6 @@
 html, body{ margin:0 auto; height:100%; -ms-text-size-adjust:100%; -webkit-text-size-adjust:100%; text-size-adjust:100%; font-size:64%;}
 input{ outline:none; }
 .show_box{padding-left:1.6rem; padding-right:1.6rem;}
-.swiper-slide{ width:20rem; }
 .grid_box{ width:100%; height:100%; padding-top:1.6rem; padding-bottom:1.6rem; border-bottom:solid 1px rgba(0, 0, 0, 0.12); }
 .title{ width:100%; height:100%; font-family:PingFangSC-Regular; color:#2F3336; }
 .content{ width:100%; height:100%; margin-top:0.8rem; font-family:PingFangSC-Light; color:#7F858A; }
@@ -10,9 +9,12 @@ input{ outline:none; }
 .content input[type="date"]{ background:transparent; }
 .content select{ width:100%; height:100%; outline:none; background: transparent;}
 .content select option{ width:100%; height:100%; }
-.photo img,video{ width:20rem; height:12.4rem; float:left; }
-.preview img{ width:20rem; height:12.4rem; float:left; }
-.preview video{ width:20rem; height:12.4rem; float:left; }
+.swiper-slide{ width:20rem; }
+.photo img,.photo video, .preview img,.preview video{ width:20rem; height:12.4rem; float:left; }
+#add_form .swiper-slide{ width:8rem; }
+#add_form .photo img,#add_form .photo video, #add_form .preview img,#add_form .preview video{ width:8rem; height:8rem; float:left;}
+#edit_form .swiper-slide{ width:8rem; }
+#edit_form .photo img,#edit_form .photo video, #edit_form .preview img,#edit_form .preview video{ width:8rem; height:8rem; float:left;}
 .show_thumb{ position:relative; text-align:center; }
 .show_thumb img{ width:100%; height:100%; max-height:25rem; }
 .loading{ width:100%; height:100%; max-height:25rem; position:absolute; z-index:999; }

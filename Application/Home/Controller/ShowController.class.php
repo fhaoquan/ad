@@ -22,7 +22,7 @@ class ShowController extends BaseController {
         $Show = D('show');
         //接收参数
         $page = I('page') ? I('page') : 1;
-        $perpage = I('perpage') ? I('perpage') : 2;
+        $perpage = I('perpage') ? I('perpage') : 5;
         $filter = $Show->create();
 
         //参数检查
@@ -31,11 +31,12 @@ class ShowController extends BaseController {
                 unset($filter[$key]);
             }
         }
+        $filter['order'] = 'thumb !="" desc';
 //        if(!in_array($filter, array())){
 //            $this->ajaxReturn(array('error'=>true,'data'=>'筛选类型有误'));
 //        }
         //分页查询节目信息列表
-        $list = $Show->where($filter)->relation(true)->field('')->limit($perpage)->page($page)->order('recommanded desc, ctime desc')->select();
+        $list = $Show->where($filter)->relation(true)->field('')->limit($perpage)->page($page)->order(array($filter['order'],'recommanded'=>'desc','ctime'=>'desc'))->select();
         foreach ($list as $index => $item) {
             $list[$index]['casts'] = array_column($item['casts'], 'name');
             $list[$index]['directors'] = array_column($item['directors'], 'name');

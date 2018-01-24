@@ -48,7 +48,7 @@
 	<div class="container" style="padding-left: 16px; padding-right: 16px;">
 		<!-- Content -->
 		<div class="show_box">
-			<form id="edit_form" action="{:U('Show/addShow')}" method="post" autocomplete="off">
+			<form id="add_form" action="{:U('Show/addShow')}" method="post" autocomplete="off">
 				<div>
 					<input id="thumb_file" name="thumb_file" type="file" value="{$show.thumb}" onchange="showThumb('{:U(\"Upload/index\")}');" style="display:none;">
 					<input id="thumb" name="thumb" type="hidden" value="{$show.thumb}">
@@ -101,7 +101,7 @@
 											<div class="swiper-slide"><img class="add_file" src="__PUBLIC__/images/upload.png"></div>
 										</div>
 									</div>
-									<input id="preview_file" name="preview_file" type="file" accept="video/*" onchange="showPreview('{:U(\"Upload/index\")}');" style="display:none;">
+									<input id="preview_file" name="preview_file" type="file" control accept="video/*" onchange="showPreview('{:U(\"Upload/index\")}');" style="display:none;">
 									<input name="{$v.name}" type="hidden"/>
 								</div>
 								<elseif condition="$v.name eq 'photo'"/>
