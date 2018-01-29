@@ -20,9 +20,9 @@
 	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<script src="__PUBLIC__/js/common.js"></script>
 	<script>
 		$(window).load(function () {
-
 			//初始化滑动图片
 			var heights = $('.swiper-slide img').height();
 			$('.swiper-container').css({height: heights}); //获取图片自适应高度赋值
@@ -91,7 +91,7 @@
 							<div class="swiper-slide"><img src="{$photo}"></div>
 						</foreach>
 						<foreach name="show.previews" item="preview">
-							<div class="swiper-slide"><video controls="controls" src="{$preview}"></video></div>
+							<div class="swiper-slide preview"><video src="{$preview}"></video><button class="play_btn">播放</button></div>
 						</foreach>
 					</div>
 				</div>
@@ -201,8 +201,5 @@
 		</div>
 	<!--</div>-->
 	<include file="Public/foot"/>
-	<script type="text/javascript">
-
-	</script>
 </body>
 </html>

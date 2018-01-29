@@ -11,16 +11,19 @@ input{ outline:none; }
 .content select option{ width:100%; height:100%; }
 .swiper-slide{ width:20rem; }
 .photo img,.photo video, .preview img,.preview video{ width:20rem; height:12.4rem; float:left; }
+
 #add_form .swiper-slide{ width:8rem; }
 #add_form .photo img,#add_form .photo video, #add_form .preview img,#add_form .preview video{ width:8rem; height:8rem; float:left;}
 #edit_form .swiper-slide{ width:8rem; }
 #edit_form .photo img,#edit_form .photo video, #edit_form .preview img,#edit_form .preview video{ width:8rem; height:8rem; float:left;}
+
+/*getShow显示*/
 .show_thumb{ position:relative; text-align:center; }
 .show_thumb img{ width:100%; height:100%; max-height:25rem; }
 .loading{ width:100%; height:100%; max-height:25rem; position:absolute; z-index:999; }
 .show_name{ width:100%; height:100%; opacity:0.87; font-family:PingFangSC-Medium; font-size:2.4rem; color:#2F3336; letter-spacing:0; }
+
 .summary input{ text-overflow:ellipsis; }
-/*getShow显示*/
 .summary{ position:relative; }
 .summary .summary_content{
     /*display:-webkit-box; //将对象作为弹性伸缩盒子模型显示。*/
@@ -31,6 +34,10 @@ input{ outline:none; }
 .director{ color:#29A1F7; }
 .read_more{ position:absolute; color:#29A1F7; text-decoration:none; bottom:0; right:0; padding-left:0.6rem; background:#fff; }
 .read_more:hover, .read_more:focus{ color:#29A1F7; text-decoration:none;}
+/*预告片*/
+.preview{position:relative;}
+.preview .play_btn{position: absolute;left:7.5rem;top:4rem;}
+
 .grid_row_box{ display:-webkit-flex; /* 新版本语法: Chrome 21+ */
     display:flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
     display:-webkit-box; /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
@@ -81,16 +88,6 @@ input{ outline:none; }
 }
 
 /*各个尺寸rem大小设置*/
-/*@media (min-width: 320px) and (max-width: 359px){html {font-size: 64%;}}*/
-/*@media (min-width: 360px) and (max-width: 374px){html {font-size: 72%;}}*/
-/*@media (min-width: 375px) and (max-width: 383px){html {font-size: 75%;}}*/
-/*@media (min-width: 384px) and (max-width: 399px){html {font-size: 76.8%;}}*/
-/*@media (min-width: 400px) and (max-width: 413px){html {font-size: 80%;}}*/
-/*@media (min-width: 414px) and (max-width: 423px){html {font-size: 82.8%;}}*/
-/*@media (min-width: 424px) and (max-width: 639px){html {font-size: 84.8%;}}*/
-/*@media (min-width: 640px) and (max-width: 749px){html {font-size: 128%;}}*/
-/*@media (min-width: 750px){html {font-size: 150%;}}*/
-
 /*@media (min-width: 320px) and (max-width: 359px){html {font-size: 62.5%;}}*/
 /*@media (min-width: 360px) and (max-width: 374px){html {font-size: 70.3125%;}}*/
 /*@media (min-width: 375px) and (max-width: 383px){html {font-size: 73.24218%;}}*/
