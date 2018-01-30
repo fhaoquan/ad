@@ -88,7 +88,6 @@ function getObjectURL(file) {
     return url;
 }
 
-//		var photoSwiper, previewSwiper;
 $(window).load(function () {
     //初始化滑动图片
     var heights = $('.swiper-slide img').height();
@@ -108,11 +107,6 @@ $(window).load(function () {
     //加载结束
     $("#loading").fadeOut(300);
     //
-    $('.grid_box').click(function () {
-//				$(this).find('input[type="text"]').click();
-//				editPost();
-//				alert(a);
-    });
     $('.content input[name="summary"]').click({type: 'editSummary'}, editHandle);
     $('.show_thumb').click(function () {
         $('#thumb_file').click();
@@ -206,8 +200,10 @@ function showPhoto(url) {
         }
     );
 }
+
 function showPreview(url) {
     //上传视频
+    previewSwiper.appendSlide('<div class="swiper-slide"><img src="'+loadingSrc+'"/></div>');
     $.ajaxFileUpload({
             url: url,
             secureuri: false,
@@ -220,18 +216,21 @@ function showPreview(url) {
                         //图片链接
                         var video = data.data;
                         if (video) {
-                            previewSwiper.appendSlide('<div class="swiper-slide"><video src="'+video+'"></video></div>');
+                            previewSwiper.getLastSlide().html('<video src="'+video+'"></video>');
+                            // previewSwiper.appendSlide('<div class="swiper-slide"><video src="'+video+'"></video></div>');
                             $('#preview').val($('#preview').val()+video+'`');
                             return true;
                         }
                     } else {
                         alert(data.data);
+                        previewSwiper.removeSlide(previewSwiper.slides.length-1);
                     }
                 }
             },
             error: function (data, status, e)//服务器响应失败处理函数
             {
                 alert(e);
+                previewSwiper.removeSlide(previewSwiper.slides.length-1);
             }
         }
     );

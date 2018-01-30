@@ -6,7 +6,7 @@ $(function(){
         addVideoListener($(this)[0]);
     });
 
-    $('.play_btn').click(function(){
+    $(document).on('click','.play_btn', function(){
         var video = $(this).siblings('video');
         video.trigger('play');
         requestFullScreen(video[0]);
@@ -20,6 +20,14 @@ function addVideoListener(video){
             exitFullScreen(video);
             video.pause();
         }
+    });
+    //添加封面图
+    video.addEventListener('loadeddata',function(){
+        var v = $(video);
+        v.width('1');
+        v.height('1');
+        v.before(captureImage(video));
+        v.after('<div class="play_btn"></div>');
     });
     //全屏监听
     addFullScreenListener(video);
@@ -78,3 +86,15 @@ function exitFullScreen(video) {
         video.webkitExitFullScreen();
     }
 }
+//获取视频第一张缩略图
+var captureImage = function(video) {
+    var scale = 1;
+    var canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth * scale;
+    canvas.height = video.videoHeight * scale;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    var img = document.createElement("img");
+    img.src = canvas.toDataURL("image/png");
+    return img;
+};

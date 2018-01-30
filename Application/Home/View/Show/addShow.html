@@ -20,6 +20,11 @@
 	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
+
+	<!--外部变量-->
+	<script>
+		var loadingSrc = '__PUBLIC__/images/loading.gif';
+	</script>
 	<link src="__PUBLIC__/css/mobile.css" rel="stylesheet"/>
 	<script src="__PUBLIC__/js/ajaxfileupload.js"></script>
 	<script src="__PUBLIC__/js/mobile.js"></script>
@@ -101,7 +106,7 @@
 											<div class="swiper-slide"><img class="add_file" src="__PUBLIC__/images/upload.png"></div>
 										</div>
 									</div>
-									<input id="preview_file" name="preview_file" type="file" control accept="video/*" onchange="showPreview('{:U(\"Upload/index\")}');" style="display:none;">
+									<input id="preview_file" name="preview_file" type="file" accept="video/*" onchange="showPreview('{:U(\"Upload/index\")}');" style="display:none;">
 									<input name="{$v.name}" type="hidden"/>
 								</div>
 								<elseif condition="$v.name eq 'photo'"/>
